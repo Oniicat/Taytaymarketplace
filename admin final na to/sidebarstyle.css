@@ -41,6 +41,9 @@ body {
     padding-top: 20px;
 }
 
+.sidebar a {
+    color: skyblue;
+}
 /* Sidebar Menu */
 .nav-links {
     list-style: none;
