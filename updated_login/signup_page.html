@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Taytay Tiangge</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="signup.css" rel="stylesheet">
+</head>
+<body>
+    <form action="signup.php" method="POST">
+        <!-- Sign Up Panel -->
+        <div class="signup-panel">
+            
+          
+
+            <div class="signup-logo">
+                <img src="images/TaytayTianggeIcon.png" alt="Logo">
+            </div>
+
+            <!-- Email -->  
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <div class="email-container">
+                    <input type="email" id="signup-email" name="email" required>
+                    <span class="email-icon">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="signup-password" name="password" required>
+                    <span class="password-toggle" id="toggle-signup-password">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <div class="password-container">
+                    <input type="password" id="confirm-password" name="confirm_password" required>
+                    <span class="password-toggle" id="toggle-confirm-password">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Terms & Privacy Links -->
+<div class="terms-links">
+    <label>
+        <input type="checkbox" id="agree-terms" name="terms" required>
+        <a href="#" id="open-terms-signup">I agree to the Terms & Conditions</a>
+    </label>
+    <div style="margin-bottom: 15px;"></div> <!-- Adjust gap here -->
+    <label>
+        <input type="checkbox" id="agree-privacy" name="privacy" required>
+        <a href="#" id="open-privacy-signup">I agree to the Data Privacy Policy</a>
+    </label>
+</div>
+
+
+            <button type="submit" id="signup-btn">Sign Up</button>
+
+            
+        </div>
+    </form>
+    <!-- Terms Popup Modal -->
+    <div class="popup" id="terms-popup">
+        <div class="popup-content">
+            <h2>Terms and Conditions</h2>
+            <p>
+                
+Welcome to the Taytay Tiangge Product Selling and Showcasing Website. By accessing or using our
+website, you agree to be bound by the following Terms and Conditions. Please read them carefully. If 
+you do not agree, you may not use this Website.
+1. General Use
+1.1. By using this Website, you affirm that you are at least 18 years old or have the consent of a parent 
+or legal guardian.
+1.2. Users must provide accurate and up-to-date information when registering an account. You are 
+responsible for maintaining the confidentiality of your account credentials.
+1.3. Prohibited Activities: You agree not to:
+Post or sell prohibited, counterfeit, or illegal products.
+Violate intellectual property rights of others.
+Use the Website for fraudulent or misleading activities.
+2. Seller Policies
+2.1. Product Listings: Sellers must provide accurate and detailed descriptions of their products, including 
+prices, sizes, colors, and availability. Misleading information is prohibited.
+2.2. Compliance with Laws: Sellers are responsible for ensuring their products comply with applicable 
+laws and regulations, including safety, labeling, and consumer protection standards.
+2.3. Transaction Fees: The Website may charge transaction fees for sales. These will be communicated 
+transparently, and by listing products, sellers agree to these fees.
+2.4. Disputes with Buyers: Sellers are responsible for resolving disputes with buyers. The Website may 
+mediate disputes but is not obligated to do so.
+3. Buyer Policies
+3.1. Product Purchases: Buyers must carefully review product listings and descriptions before making 
+purchases.
+3.2. Payment: Buyers agree to provide accurate payment information and authorize the Website to 
+process transactions.
+3.3. Refunds and Returns: Buyers must adhere to the refund and return policy established by the seller. 
+The Website is not responsible for enforcing or managing refunds.
+4. Content and Intellectual Property
+4.1. User Content: By posting content (e.g., product images, reviews) on the Website, you grant us a 
+non-exclusive, royalty-free, worldwide license to use, reproduce, and display such content for Website 
+operations.
+4.2. Website Content: All content on the Website, including text, graphics, and logos, is owned by or 
+licensed to the Website and protected by copyright laws. You may not copy, modify, or distribute this 
+content without permission.
+5. Limitation of Liability
+5.1. The Website is a platform connecting buyers and sellers. We are not responsible for the quality, 
+safety, legality, or authenticity of products listed on the Website.
+5.2. The Website is not liable for direct, indirect, incidental, or consequential damages arising from your 
+use of the platform.
+Others:
+Privacy Policy: Your privacy is important to us. Please refer to our Privacy Policy for details on how we 
+collect, use, and protect your personal information.
+Termination: We reserve the right to suspend or terminate accounts that violate these Terms and 
+Conditions or engage in fraudulent or harmful activities.
+Changes to Terms and Conditions: We may update these Terms and Conditions from time to time. Users 
+will be notified of significant changes, and continued use of the Website constitutes acceptance of the 
+revised terms.
+Governing Law: These Terms and Conditions shall be governed by and construed in accordance with the 
+laws of [insert your jurisdiction].
+By using this Website, you agree to abide by these Terms and Conditions. Thank you for being part of 
+the Taytay Tiangge community!
+At Taytay Tiangge Product Selling and Showcasing Website (“Website”), we value your privacy and are 
+committed to protecting your personal information. This Data Privacy Policy outlines how we collect, 
+use, and safeguard your data when you use our Website. By accessing or using our Website, you agree 
+to this policy
+                <!-- Add your full terms and conditions content here -->
+            </p>
+            <button class="close-btn" onclick="closeTermsPopup()">Close</button>
+        </div>
+    </div>
+
+    <!-- Privacy Popup Modal -->
+    <div class="popup" id="privacy-popup">
+        <div class="popup-content">
+            <h2>Data Privacy Policy</h2>
+            <p>
+                1. Information We Collect
+We may collect the following types of information:
+1.1. Personal Information:
+Name, email address, phone number, and billing/shipping address.
+Payment information (e.g., credit/debit card details), processed securely via third-party payment 
+gateways.
+1.2. Account Information:
+Username, password, and profile details.
+1.3. Usage Data:
+IP address, browser type, operating system, and Website activity logs.
+1.4. Cookies and Tracking Data:
+Cookies, web beacons, and similar technologies for tracking user preferences and enhancing Website 
+functionality.
+2. How We Use Your Information
+We use the information collected to:
+2.1. Provide and improve our services, including order processing, product showcasing, and customer 
+support.
+2.2. Facilitate communication between buyers and sellers.
+2.3. Send transactional and promotional emails, including updates about your account or new features.
+2.4. Analyze Website usage to enhance user experience and security.
+2.5. Comply with legal obligations or enforce our Terms and Conditions.
+3. How We Share Your Information
+We do not sell your personal information to third parties. However, we may share your information in 
+the following situations:
+3.1. With Sellers or Buyers:
+Contact details shared between buyers and sellers to facilitate transactions.
+3.2. Service Providers:
+Trusted third-party vendors that assist in operating the Website, such as payment processors, hosting 
+providers, and marketing platforms.
+3.3. Legal Compliance:
+When required by law, court orders, or governmental regulations.
+3.4. Business Transfers:
+If the Website undergoes a merger, acquisition, or asset sale, your data may be transferred as part of 
+the business.
+4. Data Security
+4.1. We implement robust technical and organizational measures to protect your data against 
+unauthorized access, loss, or misuse.
+4.2. Despite our efforts, no transmission or storage system can guarantee complete security. Users are 
+encouraged to protect their account credentials and notify us of any suspicious activity.
+5. Your Rights
+As a user, you have the following rights:
+5.1. Deletion:
+You may request the deletion of your account and personal information, subject to legal or contractual 
+obligations.
+5.2. Marketing Preferences:
+You can opt out of promotional communications by adjusting your account settings or using the 
+"Unsubscribe" link in emails.
+5.3. Data Portability:
+Request your data in a commonly used electronic format.
+To exercise these rights, contact us at [insert contact email].
+6. Cookies Policy
+6.1. What Are Cookies?
+Cookies are small text files stored on your device to enhance browsing and Website functionality.
+6.2. How We Use Cookies:
+To remember preferences, improve site performance, and analyze user behavior.
+6.3. Managing Cookies:
+You can control or disable cookies through your browser settings, though some Website features may 
+become unavailable.
+7. Data Retention
+7.1. We retain personal information only as long as necessary to fulfill the purposes outlined in this 
+policy or comply with legal requirements.
+7.2. Inactive accounts may be purged after a reasonable period, following prior notification.
+8. Third-Party Links
+Our Website may contain links to third-party sites. We are not responsible for the privacy practices of 
+these external sites, and we encourage you to review their policies before sharing any personal 
+information.
+9. Changes to This Policy
+We may update this Data Privacy Policy to reflect changes in our practices or legal requirements. Users 
+will be notified of significant updates, and continued use of the Website constitutes acceptance of the 
+revised policy.
+                <!-- Add your full data privacy policy content here -->
+            </p>
+            <button class="close-btn" onclick="closePrivacyPopup()">Close</button>
+        </div>
+    </div>
+
+
+    <div class="login-container">
+        <div class="logintextsgroup">
+        <h2>Have an account?</h2>
+        <p>You may proceed by signing</p>
+        <p>in your account.</p>  
+        <form action="signin_page.html">
+        <button><b>Log In</b></button>
+    </form>
+    </div>  
+      </div>
+
+
+
+
+
+    <script>
+        // Toggle Password Visibility for Sign Up
+        document.getElementById('toggle-signup-password').addEventListener('click', function() {
+            const passwordField = document.getElementById('signup-password');
+            const icon = this.querySelector('i');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+
+        document.getElementById('toggle-confirm-password').addEventListener('click', function() {
+            const confirmPasswordField = document.getElementById('confirm-password');
+            const icon = this.querySelector('i');
+
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                confirmPasswordField.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+        
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    // Check if the passwords match
+    if (password !== confirmPassword) {
+        event.preventDefault(); // Prevent form submission
+        alert('Passwords do not match. Please ensure both passwords are identical.');
+    }
+});
+
+
+
+        // Open Terms Popup
+        document.getElementById('open-terms-signup').addEventListener('click', function() {
+            document.getElementById('terms-popup').style.display = 'block';
+        });
+
+        // Close Terms Popup
+        function closeTermsPopup() {
+            document.getElementById('terms-popup').style.display = 'none';
+        }
+
+        // Open Privacy Popup
+        document.getElementById('open-privacy-signup').addEventListener('click', function() {
+            document.getElementById('privacy-popup').style.display = 'block';
+        });
+
+        // Close Privacy Popup
+        function closePrivacyPopup() {
+            document.getElementById('privacy-popup').style.display = 'none';
+        }
+
+     
+
+
+  document.querySelector('form').addEventListener('submit', function(event) {
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    const termsAccepted = document.getElementById('agree-terms').checked;
+    const privacyAccepted = document.getElementById('agree-privacy').checked;
+
+    // Check if the passwords match
+    if (password !== confirmPassword) {
+        event.preventDefault(); // Prevent form submission
+        alert('Passwords do not match. Please ensure both passwords are identical.');
+        return;
+    }
+
+    // Check if Terms and Privacy checkboxes are checked
+    if (!termsAccepted || !privacyAccepted) {
+        event.preventDefault(); // Prevent form submission
+        alert('You must agree to the Terms & Conditions and the Data Privacy Policy before signing up.');
+        return;
+    }
+});
+
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    const termsAccepted = document.getElementById('agree-terms').checked;
+    const privacyAccepted = document.getElementById('agree-privacy').checked;
+
+    // Check if the passwords match
+    if (password !== confirmPassword) {
+        event.preventDefault(); // Prevent form submission
+        alert('Passwords do not match. Please ensure both passwords are identical.');
+        return;
+    }
+
+    // Check if Terms and Privacy checkboxes are checked
+    if (!termsAccepted || !privacyAccepted) {
+        event.preventDefault(); // Prevent form submission
+        alert('You must agree to the Terms & Conditions and the Data Privacy Policy before signing up.');
+        return;
+    }
+
+    // Password Validation: At least 1 uppercase, 1 symbol, and 8 characters
+    const passwordStrengthRegex = /^(?=.*[A-Z])(?=.*[\W_])(?=.{8,})/;
+    if (!passwordStrengthRegex.test(password)) {
+        event.preventDefault(); // Prevent form submission
+        alert('Your password must be at least 8 characters long, contain at least one uppercase letter, and one special character.');
+        return;
+    }
+});
+
+    </script>
+</body>
+</html>

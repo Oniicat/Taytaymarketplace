@@ -1,0 +1,99 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Container for the terms and condition form */
+.terms-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 1000px; /* Max width for the form */
+    width: 90%; /* Full width but with a max limit */
+    margin: 0 auto; /* Center the container horizontally */
+    box-sizing: border-box;
+}
+
+/* Heading */
+.terms-container h2 {
+    font-size: 24px; /* Larger font size for better readability */
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Textarea */
+.terms-container textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    height: 80px; /* Increased height */
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    resize: vertical; /* Allow vertical resize */
+}
+
+/* Buttons container */
+.terms-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Cancel button */
+.cancel-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+    background-color: #ddd;
+}
+
+/* Save button */
+.save-btn {
+    background-color: #712798;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: #3D1055;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+    .terms-container {
+        width: 100%; /* Full width on small screens */
+        padding: 15px; /* Less padding for small screens */
+    }
+
+    .terms-container h2 {
+        font-size: 20px; /* Smaller heading */
+    }
+
+    .terms-container textarea {
+        height: 120px; /* Smaller textarea height */
+    }
+
+    .terms-buttons {
+        flex-direction: column; /* Stack buttons vertically on smaller screens */
+        align-items: stretch;
+    }
+
+    .cancel-btn, .save-btn {
+        width: 100%; /* Buttons take full width */
+        padding: 12px;
+    }
+}

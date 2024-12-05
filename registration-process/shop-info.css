@@ -1,0 +1,263 @@
+.custom-navbar {
+    background-color: white ;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+}
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.navbar-center input[type="search"] {
+    flex-grow: 1;
+    max-width: 500px;
+    padding: 0.6rem 2rem 0.6rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    background-size: 20px;
+}
+
+
+/* Logo Image */
+.navbar-center .navbar-logo {
+    width: 110px;
+    height: auto;
+    margin-right: 40px;
+    margin-left: -150px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-center .navbar-logo {
+        width: 50px;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-center .navbar-logo {
+        width: 40px;
+        margin-left: 8px;
+    }
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+/* Navbar Styling */
+.custom-navbar {
+    background-color: white;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    width: 100px;
+    height: auto;
+}
+
+/* Form Container */
+.form-container {
+    max-width: 900px;
+    margin: 100px auto 50px auto;
+    padding: 1px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Section Titles */
+h2 {
+    font-size: 1.5rem;
+    color: #712798;
+    text-align: left;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Info Containers */
+.shopowner-info {
+    background-color: white;
+    padding: 40px; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px;
+    height: 300px;
+}
+
+.shop-info {
+    background-color: white;
+    padding: 50px; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 40px 20px; 
+    position: relative;
+}
+
+/* Input Labels and Fields */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Buttons Container Inside shop-info */
+.shop-info .form-buttons {
+    grid-column: span 2; 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 10px; 
+}
+
+/* Buttons Container Outside Shop Info */
+.form-buttons {
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 20px; 
+}
+
+/* Buttons Styling */
+button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.submit-button {
+    background-color: #712798;
+    color: white;
+}
+
+button.submit-button:hover {
+    background-color: #5a1d77;
+    transform: scale(1.0);
+}
+
+button.cancel-button {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+button.cancel-button:hover {
+    background-color: #d6d6d6;
+    transform: scale(1.0);
+}
+
+.home-button {
+    background-color: #712798; /* Green color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.home-button:hover {
+    background-color: #5a1d77;
+}
+
+
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .shopowner-info, .shop-info {
+        grid-template-columns: 1fr; 
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-buttons {
+        justify-content: center; 
+    }
+}
+
+/* Notification Pop-up */
+.notification-popup {
+    display: none; 
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px; 
+    width: 85%;     
+    max-width: 500px; 
+    text-align: center;
+    z-index: 1001;
+}
+
+.notification-popup .notification-content {
+    padding: 30px;  
+}
+
+.notification-popup h3 {
+    font-size: 1.5rem;  
+    color: #712798;
+    margin-bottom: 15px;  
+}
+
+.notification-popup p {
+    font-size: 1.2rem;  
+    color: #333;
+    margin-bottom: 10px; 
+}

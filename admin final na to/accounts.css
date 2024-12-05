@@ -1,0 +1,191 @@
+/* General Reset */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  /* Container Styling */
+  .container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Alert Box Styling */
+  .alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+  
+  .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+  }
+  
+  .alert .btn-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #856404;
+    cursor: pointer;
+  }
+  
+  /* Button Styling */
+  .btnn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    background-color: #712798;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btnn:hover {
+    background-color: #495057;
+  }
+  
+  .btnn-dark {
+    margin-bottom: 20px;
+  }
+  
+
+  .form-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between; /* Ensures proper alignment and spaces between the elements */
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+/* Search Form Styling */
+.search-form,
+.filter-form {
+  margin: 0;
+}
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  align-items: center;
+}
+
+/* Search Input and Select Dropdown */
+  .search-input,
+  .form-select {
+    padding: 10px;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-width: 200px;
+    width: 100%;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .table thead {
+    background-color: #712798;
+    color: #ffff;
+  }
+  
+  .table th,
+  .table td {
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: #ffffff;
+  }
+  
+  .table th {
+    font-weight: bold;
+  }
+  
+  .table td {
+    color: #555;
+  }
+  
+  .table-dark th {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .link-dark {
+    color: #343a40;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .link-dark:hover {
+    color: #495057;
+  }
+  
+  .fa-pen-to-square {
+    color: #007bff;
+    transition: color 0.3s;
+  }
+  
+  .fa-pen-to-square:hover {
+    color: #0056b3;
+  }
+  
+  .fa-trash {
+    color: #dc3545;
+    transition: color 0.3s;
+  }
+  
+  .fa-trash:hover {
+    color: #a71d2a;
+  }
+
+  /* Remove background, borders, and padding from buttons */
+.btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: inherit; /* Inherit color from parent or use your desired color */
+}
+
+/* Style for icons inside buttons */
+.btn i {
+  font-size: 1.2rem; /* Adjust icon size */
+  transition: color 0.3s; /* Smooth color transition on hover */
+}
+
+.btn i:hover {
+  color: #3D1055; /* Darker color on hover */
+}
+
+/* Remove text-decoration from links */
+a.btn {
+  text-decoration: none;
+}
+
+  
+ 

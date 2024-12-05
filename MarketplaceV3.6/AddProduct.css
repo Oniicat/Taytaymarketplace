@@ -1,0 +1,426 @@
+body {
+    background-color: white;
+    margin: 0;
+}
+/* General reset and custom styles */
+.custom-navbar {
+    background-color: white;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar Center: Search Bar, Dropdown, and Switch to Market Place Link */
+.navbar-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.navbar-center input[type="search"] {
+    flex-grow: 1;
+    max-width: 500px;
+    padding: 0.6rem 2rem 0.6rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    background: #fff url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/search.svg') no-repeat 10px center;
+    background-size: 20px;
+}
+
+/* Logo Image */
+.navbar-center .navbar-logo {
+    width: 110px;
+    height: auto;
+    margin-right: 40px;
+    margin-left: -250px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-center .navbar-logo {
+        width: 50px;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-center .navbar-logo {
+        width: 40px;
+        margin-left: 8px;
+    }
+}
+
+/* Add Product Container */
+.Add-Product-container {
+    max-width: 800px;
+    margin: 50px auto 20px; 
+    padding: 30px;
+    border-radius: 8px;
+    position: relative;
+    margin-left: 50px;
+}
+
+/* Add Product Header */
+.Add-Product-header h2 {
+    color: #712798;
+    font-size: 35px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+/* Product Image Container */
+.product-image-container {
+    text-align: center;
+    margin-bottom: 40px;
+    width: 760px;
+    height: 240px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    
+    /* Adding the outline */
+    outline: 1px solid gray; /* Blue outline */
+    outline-offset: 5px; /* Adds space between the outline and the container */
+}
+
+
+/* Product Image */
+.product-image {
+    width: 100%; 
+    height: 100%;
+    object-fit: contain; 
+    border-radius: 8px;  
+}
+
+/* Product Name, Price, Category, and Description Textboxes */
+input, textarea {
+    width: 98%;
+    margin-bottom: 5px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.product-description {
+    height: 150px;
+    resize: none;
+}
+
+/* Product Links */
+/* Container for all product links */
+.product-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 columns */
+    gap: 1px;
+}
+
+/* Each individual link item container */
+.link-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between label and input */
+}
+
+/* Label for the title */
+.link-title {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Input box for the URL */
+.product-link {
+    width: 93%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+
+/* Buttons Container */
+.buttons-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.submit-btn,
+.cancel-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn {
+    background-color: #712798;
+    color: white;
+    border: none;
+}
+
+.submit-btn:hover {
+    background-color: gray;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid gray;
+    text-align: center;
+}
+
+.cancel-btn:hover {
+    background-color: gray;
+    color: white;
+}
+
+/* Responsive Styles */
+
+/* Small devices (max-width: 768px) */
+@media (max-width: 768px) {
+    .Add-Product-container {
+        padding: 15px; 
+        margin: 60px auto 20px; 
+    }
+
+    .product-image-container {
+        width: 100%; 
+        height: 250px; 
+    }
+
+    .product-description {
+        height: 120px; 
+    }
+}
+
+/* Medium devices (768px to 1024px) - Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .Add-Product-container {
+        padding: 20px; 
+        margin: 100px auto 20px;
+    }
+
+    .product-image-container {
+        width: 90%; 
+        height: 220px;
+    }
+}
+
+/* Large devices (1025px and above) */
+@media (min-width: 1025px) {
+    .Add-Product-container {
+        padding: 30px; 
+        margin: 50px auto 20px;
+    }
+
+    .product-image-container {
+        width: 760px; 
+        height: 240px; 
+    }
+}
+
+
+/* Product Category Textbox */
+.product-category {
+    width: 98%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-bottom: 10px;
+    position: relative; 
+    cursor: pointer; 
+}
+
+/* Category list container */
+.category-list {
+    display: none; 
+    position: absolute; 
+    top: 57%; 
+    left: 40;
+    width: 80%;  
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 9999; 
+}
+
+/* Show the category list when toggled */
+.category-list.show {
+    display: block;
+}
+
+/* Style the individual category items */
+.category-list a {
+    display: block;
+    padding: 10px;
+    font-size: 14px;
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+}
+
+.category-list a:hover {
+    background-color: #f0f0f0;
+}
+
+.Links-text {
+    text-align: left;
+    color: #712798;
+    font-size: 25px;
+    /* Adjust size as needed */
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+/* Links Header Container */
+.links-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Add External Link Button */
+.add-external-link-btn {
+    position: absolute; 
+    padding: 7px 13px;
+    background-color: #712798;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 10; 
+    margin-left: 650px;
+    margin-top: -48px;
+    
+}
+
+.add-external-link-btn:hover {
+    background-color: #5a1d77;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Content */
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Input Fields */
+.modal input[type="text"], .modal input[type="url"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Buttons */
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.modal-buttons .cancel-btn {
+    background: #ccc;
+    color: #333;
+}
+
+.modal-buttons .add-btn {
+    background: #712798;
+    color: white;
+}
+
+.modal-buttons .add-btn:hover {
+    background: #5a1d77;
+}
+
+/* Back Button Styles */
+.back-btn {
+    margin-left: 900px;
+    background-color: white; 
+    color: #712798; 
+    padding: 0.5rem 1rem; 
+    border: 2px solid #712798; 
+    border-radius: 5px; 
+    font-size: 1rem; 
+    text-decoration: none; 
+    display: inline-block; 
+    cursor: pointer;
+    z-index: 1001; 
+    transition: background-color 0.3s, transform 0.3s, color 0.3s;
+}
+
+/* Hover Effect */
+.back-btn:hover {
+    background-color: #712798; 
+    color: white;
+    transform: scale(1.05); 
+}
+

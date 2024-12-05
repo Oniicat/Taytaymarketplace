@@ -1,0 +1,433 @@
+/* General reset and custom styles */
+.custom-navbar {
+    background-color: white ;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+}
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.navbar-center input[type="search"] {
+    flex-grow: 1;
+    max-width: 500px;
+    padding: 0.6rem 2rem 0.6rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    background: #fff url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/svgs/solid/search.svg') no-repeat 10px center;
+    background-size: 20px;
+}
+
+
+/* Logo Image */
+.navbar-center .navbar-logo {
+    width: 110px;
+    height: auto;
+    margin-right: 40px;
+    margin-left: -250px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-center .navbar-logo {
+        width: 50px;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-center .navbar-logo {
+        width: 40px;
+        margin-left: 8px;
+    }
+}
+
+
+
+
+/* User Profile Container */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Profile Image Container */
+.profile-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: auto;
+    margin-left: 60px;
+    margin-right: -60px;
+    transition: transform 0.3s ease;
+}
+
+/* Remove hover effect */
+.profile-container:hover {
+    transform: none;
+}
+
+/* Avatar Image */
+.user-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+    transition: outline 0.3s ease;
+}
+
+/* User Profile Dropdown */
+.user-profile-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 200px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+
+.user-profile-dropdown.show {
+    display: block;
+}
+
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-profile-header .user-avatar {
+    width: 60px;
+    height: 60px;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.user-profile-dropdown a {
+    display: block;
+    padding: 8px 0;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.user-profile-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive for small desktop sizes (max-width: 1024px) */
+@media (max-width: 1024px) {
+
+    /* Adjust Profile Container Size */
+    .profile-container {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Avatar Image */
+    .user-avatar {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* User Profile Dropdown */
+    .user-profile-dropdown {
+        width: 180px;
+    }
+
+    /* Adjust User Profile Header Avatar Size */
+    .user-profile-header .user-avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .user-name {
+        font-size: 14px;
+    }
+
+    /* Adjust Profile Container and Dropdown for better fit */
+    .user-profile {
+        gap: 8px;
+    }
+}
+
+/* Responsive for mobile devices (max-width: 768px) */
+@media (max-width: 768px) {
+
+    /* Adjust Profile Container Size */
+    .profile-container {
+        width: 30px;
+        height: 30px;
+    }
+
+    .user-avatar {
+        width: 100%;
+        height: 100%;
+    }
+
+    .user-profile-dropdown {
+        width: 160px;
+    }
+
+    .user-profile-header .user-avatar {
+        width: 45px;
+        height: 45px;
+    }
+
+    .user-name {
+        font-size: 12px;
+    }
+
+    /* Additional changes for very small screens (max-width: 480px) */
+    .user-profile {
+        gap: 5px;
+    }
+
+    .user-profile-dropdown {
+        width: 150px;
+    }
+
+    .user-profile-header .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+
+/* Category Dropdown Button */
+.dropdown {
+    position: relative;
+}
+
+.dropdown button {
+    background-color: white;
+    color: #712798;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.dropdown button:hover {
+    background-color: #f7f7f7;
+    color: #6E38D8;
+    border-color: #6E38D8;
+}
+
+.dropdown button .arrow {
+    margin-left: 8px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #712798;
+    transition: transform 0.3s ease-in-out;
+}
+
+.dropdown.show button .arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
+    z-index: 10;
+}
+
+.dropdown.show .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Dropdown items styled as blocks with proper spacing */
+.dropdown-content a {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s, padding-left 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    padding-left: 25px;
+}
+
+/* Responsive for small desktop sizes (max-width: 1024px) */
+@media (max-width: 1024px) {
+
+    /* Navbar Center Layout */
+    .navbar-center {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    /* Search Bar */
+    .navbar-center input[type="search"] {
+        max-width: 350px;
+    }
+
+    /* Category Dropdown */
+    .dropdown button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    /* Switch to Market Place Link */
+    .Directions-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsive for mobile devices (max-width: 768px) */
+@media (max-width: 768px) {
+    .custom-navbar {
+        padding: 15px 20px;
+    }
+
+    .navbar-center {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    /* Search Bar */
+    .navbar-center input[type="search"] {
+        max-width: 250px;
+    }
+
+    /* Category Dropdown */
+    .dropdown button {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .Directions-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Switch to Market Place Link as text with orange outline */
+.Switch-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: transparent;
+    color: #712798;
+    border: 2px solid #712798;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: -50px;
+}
+
+.Switch-btn:hover {
+    background-color: #712798;
+    color: white;
+}
+
+/* Header Image */
+.header-image {
+    width: 100%;
+    height: auto;
+    max-width: 800px;
+    position: relative;
+}
+
+.header-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.Directions-btn:hover {
+    background-color: #712798;
+    color: white;
+}
+
+/* Back Button Styles */
+.back-btn {
+    margin-left: -290px;
+    background-color: #712798;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    z-index: 1001;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #6E38D8;
+    transform: scale(1.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .back-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
