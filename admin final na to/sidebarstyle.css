@@ -43,7 +43,7 @@ body {
 
 .sidebar a {
     color: mediumaquamarine;
-    font-family: 'Franklin Gothic Medium';
+    font-family: 'Times New Roman';
 }
 /* Sidebar Menu */
 .nav-links {
@@ -65,7 +65,7 @@ body {
 }
 
 .nav-links a:hover {
-    background-color: #575757;
+    background-color: red;
 }
 
 /* Dropdown Menu */
