@@ -33,7 +33,7 @@ body {
 .sidebar {
     width: 230px;
     height: calc(100vh - 60px); 
-    background-color: purple;
+    background-color: #712798;
     position: fixed;
     top: 60px; 
     left: 0;
@@ -43,7 +43,7 @@ body {
 
 .sidebar a {
     color: mediumaquamarine;
-    font-family: 'Times New Roman';
+    font-family: 'Gill Sans';
 }
 /* Sidebar Menu */
 .nav-links {
