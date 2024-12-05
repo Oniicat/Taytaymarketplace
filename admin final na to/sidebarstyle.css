@@ -33,7 +33,7 @@ body {
 .sidebar {
     width: 230px;
     height: calc(100vh - 60px); 
-    background-color: #712798;
+    background-color: red;
     position: fixed;
     top: 60px; 
     left: 0;
