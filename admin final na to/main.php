@@ -18,7 +18,7 @@
     <div class="sidebar">
         <ul class="nav-links">
             <li><a href="main.php?page=dashboard">Dashboard</a></li>
-            <li><a href="main.php?page=admin-registration">Registration</a></li>
+            <li><a href="main.php?page=admin-registration">Seller Registration</a></li>
             <li><a href="main.php?page=admin-registered-shops">Shops</a></li>
             <li><a href="main.php?page=accounts">Accounts</a></li>
             <li class="dropdown">
