@@ -33,7 +33,7 @@ body {
 .sidebar {
     width: 230px;
     height: calc(100vh - 60px); 
-    background-color: purple;
+    background-color: red;
     position: fixed;
     top: 60px; 
     left: 0;
@@ -42,7 +42,8 @@ body {
 }
 
 .sidebar a {
-    color: red;
+    color: mediumaquamarine;
+    font-family: 'Gill Sans';
 }
 /* Sidebar Menu */
 .nav-links {
@@ -64,7 +65,7 @@ body {
 }
 
 .nav-links a:hover {
-    background-color: #575757;
+    background-color: purple;
 }
 
 /* Dropdown Menu */
