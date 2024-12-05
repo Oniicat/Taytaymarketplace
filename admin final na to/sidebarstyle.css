@@ -43,6 +43,7 @@ body {
 
 .sidebar a {
     color: red;
+    font-family: 'Franklin Gothic Medium';
 }
 /* Sidebar Menu */
 .nav-links {
