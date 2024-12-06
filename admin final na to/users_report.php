@@ -13,7 +13,7 @@
 
 <body>
     <div class="container">
-        <h1>Users</h1>
+        <h1>Seller</h1>
         <div class="filter-bar">
             <input type="text" name="search_field" id="search_field" placeholder="Search" class="search-box">
         </div>
