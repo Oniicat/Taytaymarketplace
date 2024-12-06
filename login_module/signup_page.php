@@ -76,7 +76,7 @@ foreach ($content_keys as $content_key) {
             
        
             <div class="signup-logo">
-                <img src="images/TaytayTianggeIcon.png" alt="Logo">
+                <img src="<?php echo (file_exists('logo_path.txt') && trim(file_get_contents('logo_path.txt'))) ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo">
             </div>
 
             <!-- Email -->  

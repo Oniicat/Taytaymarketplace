@@ -1,38 +1,68 @@
 <?php
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $upload_dir = 'uploads/';
-    $upload_file = $upload_dir . basename($_FILES['logo']['name']);
+    // Define upload directories
+    $marketplace_upload_dir = __DIR__ . '/../MarketplaceV3.6/uploads/';
+    $admin_upload_dir = __DIR__ . '/uploads/';
+    $login_module_upload_dir = __DIR__ . '/../login_module/uploads/';
+
+    // Ensure all upload directories exist
+    if (!is_dir($marketplace_upload_dir)) {
+        mkdir($marketplace_upload_dir, 0777, true);
+    }
+    if (!is_dir($admin_upload_dir)) {
+        mkdir($admin_upload_dir, 0777, true);
+    }
+    if (!is_dir($login_module_upload_dir)) {
+        mkdir($login_module_upload_dir, 0777, true);
+    }
+
+    // Sanitize the file name
+    $filename = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $_FILES['logo']['name']);
+    $marketplace_upload_file = $marketplace_upload_dir . basename($filename);
+    $admin_upload_file = $admin_upload_dir . basename($filename);
+    $login_module_upload_file =  $login_module_upload_dir . basename($filename);
+
     $upload_ok = 1;
 
-    // Check if file is an image
+    // Check if the file is an image
     $check = getimagesize($_FILES['logo']['tmp_name']);
     if ($check === false) {
-        echo "File is not an image.";
+        $error_message = "File is not an image.";
         $upload_ok = 0;
     }
 
     // Allow certain file formats
     $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-    $image_file_type = strtolower(pathinfo($upload_file, PATHINFO_EXTENSION));
+    $image_file_type = strtolower(pathinfo($marketplace_upload_file, PATHINFO_EXTENSION));
     if (!in_array($image_file_type, $allowed_types)) {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $error_message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         $upload_ok = 0;
     }
 
-    // Check if $upload_ok is set to 0 by an error
     if ($upload_ok === 0) {
-        echo "Sorry, your file was not uploaded.";
+        $error_message = $error_message ?? "Sorry, your file was not uploaded.";
     } else {
-        // Try to upload file
-        if (move_uploaded_file($_FILES['logo']['tmp_name'], $upload_file)) {
-            echo "The file " . htmlspecialchars(basename($_FILES['logo']['name'])) . " has been uploaded.";
-            
-            // Save new logo path in a config file or database
-            file_put_contents('logo_path.txt', $upload_file);
+        // Move the uploaded file to the first location
+        if (move_uploaded_file($_FILES['logo']['tmp_name'], $marketplace_upload_file)) {
+            // Copy the file to the second and third locations (admin and login_module)
+            if (!copy($marketplace_upload_file, $admin_upload_file)) {
+                $error_message = "File was uploaded to marketplace/uploads, but failed to copy to admin/uploads.";
+            } else if (!copy($marketplace_upload_file, $login_module_upload_file)) {
+                $error_message = "File was uploaded to marketplace/uploads, but failed to copy to login_module/uploads.";
+            } else {
+                $success_message = "The file " . htmlspecialchars(basename($filename)) . " has been uploaded to all directories.";
 
+                // Save the relative path to logo_path.txt in all locations
+                $relative_path = 'uploads/' . $filename;
+                file_put_contents(__DIR__ . '/../MarketplaceV3.6/logo_path.txt', $relative_path); // marketplace
+                file_put_contents(__DIR__ . '/logo_path.txt', $relative_path); // admin
+                file_put_contents(__DIR__ . '/../login_module/logo_path.txt', $relative_path); // login_module
+            }
         } else {
-            echo "Sorry, there was an error uploading your file.";
+            $error_message = "Sorry, there was an error uploading your file.";
         }
+        // Redirect back to the change_logo page after the upload
         header('Location: main.php?page=change_logo');
         exit();
     }

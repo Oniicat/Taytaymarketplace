@@ -99,7 +99,7 @@ function getPopularProducts() {
 <div class="custom-navbar">
     <div class="navbar-center">
         <a href="MarketPlace(Seller).php">
-        <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
+        <img src="<?php echo (file_exists('logo_path.txt') && trim(file_get_contents('logo_path.txt'))) ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="navbar-logo">
         </a> 
         <!-- Logout Button -->
         <button class="logout-btn" onclick="window.location.href = '../login_module/signin_page.php';">Log Out</button>

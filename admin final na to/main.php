@@ -10,7 +10,8 @@
     <!-- Navbar -->
     <div class="navbar">
     <a href="index.php">
-    <img src="<?php echo file_exists('logo_path.txt') ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="logo">
+    <img src="<?php echo (file_exists('logo_path.txt') && trim(file_get_contents('logo_path.txt'))) ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="logo">
+
 </a>
     </div>
 

@@ -116,7 +116,7 @@ function getPopularProducts() {
   <!-- Navbar -->
   <div class="custom-navbar">
     <div class="navbar-center">
-      <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
+      <img src="<?php echo file_exists('logo_path.txt') ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="navbar-logo">
 
 
       <!-- Get Directions btn -->
