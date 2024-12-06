@@ -38,18 +38,7 @@
 </body>
 
 
-<script>
-    // Fetch all product data when the page loads and whenever the category filter is changed
-    document.addEventListener('DOMContentLoaded', function() {
-    fetch_report_data();  // Load all products when the page is loaded
-    });
-    document.getElementById('municipality_filter').addEventListener('change', update_report);
-    
-    function update_report() {
-        let selected_municipality = document.getElementById('municipality_filter').value;
-        fetch_report_data(selected_municipality)
-    }
-    
+<script> 
     // Function to fetch and display data based on the selected filters
     function fetch_report_data(municipality_filter){
         $.ajax({
@@ -87,7 +76,7 @@
                         let noDataRow = document.createElement('tr');
                         let noDataCell = document.createElement('td');
                         noDataCell.setAttribute('colspan', 6);  // Adjust column span based on your table structure
-                        noDataCell.textContent = 'No products found with the selected category';
+                        noDataCell.textContent = 'No accounts found with the selected category';
                         noDataRow.appendChild(noDataCell);
                         tableBody.appendChild(noDataRow);
                     }
