@@ -93,7 +93,7 @@ function getPopularProducts() {
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <title>Market Place Dashboard</title>
+  <title>Marketplace Dashboard</title>
 <style> 
  body {
     background-color: #F4F4F4;
@@ -124,7 +124,7 @@ function getPopularProducts() {
 <div class="header-and-content-container">
 
   <!-- My Products Text -->
-  <div class="Marketplace-text">Marketplace</div>
+  <div class="Marketplace-text">Hello, Welcome to Marketplace.</div>
 
 <!-- Search Bar -->
   <div class="search-bar-container">
@@ -204,7 +204,7 @@ function getPopularProducts() {
 
    <!-- Details Container -->
    <div class="details-container">
-      <h2 class="details-title">Taytay Taingge</h2>
+      <h2 class="details-title">Taytay MarketPlace</h2>
       <p class="details-text"><?php echo $content_texts['Address']; ?></p>
       <p class="details-text"><strong><?php echo $content_texts['OpeningClosing']; ?></strong></p>
       <div class="from-section">

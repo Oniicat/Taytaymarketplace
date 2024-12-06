@@ -223,7 +223,7 @@ function getPopularProducts() {
 
 <!-- Details Container -->
 <div class="details-container">
-      <h2 class="details-title">Taytay Tiangge</h2>
+      <h2 class="details-title">Taytay Marketplace</h2>
       <p class="details-text"><?php echo $content_texts['Address']; ?></p>
       <p class="details-text"><strong><?php echo $content_texts['OpeningClosing']; ?></strong></p>
       <div class="from-section">
