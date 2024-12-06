@@ -92,7 +92,7 @@ function getPopularProducts() {
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <title>Seller Dashboard</title>
+  <title>Seller Dashboard ng mamamo</title>
 </head>
 <body>
 <!-- Navbar -->
