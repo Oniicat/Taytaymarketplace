@@ -24,7 +24,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RegisteredShops</title>
+    <title>Registered Shops</title>
     <link rel="stylesheet" href="admin-registered-shops.css">
     <style>
         .modal, .modal-overlay {
