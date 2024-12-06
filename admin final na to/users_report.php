@@ -40,13 +40,9 @@
 
 <script> 
     // Function to fetch and display data based on the selected filters
-    function fetch_report_data(municipality_filter){
         $.ajax({
             url: 'users_report_connection.php',
             method: 'POST',
-            data: {
-                municipality: municipality_filter,
-            },
             dataType: 'json',
             success: function(data) {
             let reportData = data;
@@ -85,7 +81,6 @@
                 console.error('Error Fetching Data:', error);
             }
         });
-    }
 
     document.getElementById('search_field').addEventListener('keyup', function() {
     let query = this.value.toLowerCase();
