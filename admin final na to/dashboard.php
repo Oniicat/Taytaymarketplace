@@ -154,7 +154,7 @@
      
     <!-- Products Card -->
     <div class="card">
-      <h3>New Registration</h3>
+      <h3>Registration</h3>
       <p id="products-count">
       <?= getCountThisMonth('users');?>
       </p>
