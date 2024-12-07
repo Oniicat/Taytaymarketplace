@@ -25,7 +25,6 @@ class PDF extends FPDF {
         $this->Cell(0, 10, 'Page ' . $this->PageNo(), 0, 0, 'C');
     }
 
-    // Create a table
     function ProductTable($header, $data) {
         // Add the table title
         $this->SetFont('Helvetica', 'B', 14); // Use Helvetica font
@@ -33,28 +32,57 @@ class PDF extends FPDF {
         $this->Cell(0, 10, 'TAYTAY MARKETPLACE SELLERS DATA', 0, 1, 'C');
         $this->Ln(5);
 
+        // Define column widths
+        $widths = [15, 30, 20, 25, 40, 40, 25]; // Adjusted column widths after removing shop description
+
         // Add the table header
         $this->SetFont('Helvetica', 'B', 9); // Slightly smaller font for the header
         $this->SetFillColor(101, 45, 144); // Purple background
         $this->SetTextColor(255, 255, 255); // White text
-        $widths = [10, 40, 40, 20, 30, 30, 25]; // Adjusted column widths
-        for ($i = 0; $i < count($header); $i++) {
-            $this->Cell($widths[$i], 8, $header[$i], 1, 0, 'C', true);
+        foreach ($header as $i => $col) {
+            $this->Cell($widths[$i], 8, $col, 1, 0, 'C', true);
         }
         $this->Ln();
 
         // Add the table rows
         $this->SetFont('Helvetica', '', 8); // Slightly smaller font for rows
-        $this->SetTextColor(1); // Black text
+        $this->SetTextColor(0); // Black text
         foreach ($data as $row) {
-            $this->Cell($widths[0], 8, $row['#'], 1, 0, 'C');
-            $this->Cell($widths[1], 8, $row['seller_name'], 1, 0, 'L');
-            $this->Cell($widths[2], 8, $row['shop_name'], 1, 0, 'L');
-            $this->Cell($widths[3], 8, $row['stall_number'], 1, 0, 'L');
-            $this->Cell($widths[4], 8, $row['business_permit_number'], 1, 0, 'L');
-            $this->Cell($widths[5], 8, $row['municipality'], 1, 0, 'L');
-            $this->Cell($widths[6], 8, number_format($row['products']), 1, 0, 'C');
-            $this->Ln();
+            $cellData = [
+                $row['#'],
+                $row['seller_name'],
+                $row['shop_name'],
+                $row['stall_number'],
+                $row['business_permit_number'],
+                $row['municipality'],
+                number_format($row['products'])
+            ];
+
+            // Calculate the maximum height for the row
+            $maxHeight = 0;
+            $multiCellHeights = [];
+            foreach ($cellData as $i => $text) {
+                // Calculate the number of lines for each cell based on width
+                $lineCount = ceil($this->GetStringWidth($text) / $widths[$i]);
+                // Calculate the height for each cell
+                $cellHeight = $lineCount * 6; // Default line height
+                $multiCellHeights[$i] = $cellHeight;
+
+                // Update the maximum row height
+                if ($cellHeight > $maxHeight) {
+                    $maxHeight = $cellHeight;
+                }
+            }
+
+            // Draw each cell in the row
+            foreach ($cellData as $i => $text) {
+                $x = $this->GetX();
+                $y = $this->GetY();
+                $this->MultiCell($widths[$i], 6, $text, 1, 'L');
+                $this->SetXY($x + $widths[$i], $y); // Move to the next cell
+            }
+
+            $this->Ln($maxHeight); // Move to the next row based on the tallest cell height
         }
     }
 }
@@ -81,7 +109,6 @@ $query = "SELECT su.seller_id as '#', CONCAT(si.first_name, ' ', si.last_name) A
     GROUP BY si.seller_id";
 $result = $conn->query($query);
 
-// Check if query is successful
 if (!$result) {
     die("Query failed: " . $conn->error);
 }
@@ -97,7 +124,7 @@ if ($result->num_rows > 0) {
 $header = ['#', 'SELLER NAME', 'SHOP', 'STALL NO.', 'PERMIT', 'MUNICIPALITY', 'PRODUCTS'];
 
 // Create PDF
-$pdf = new PDF();
+$pdf = new PDF('P', 'mm', 'A4'); // Portrait orientation
 $pdf->AddPage();
 $pdf->ProductTable($header, $data);
 $pdf->Output();
