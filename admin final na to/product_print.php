@@ -1,5 +1,6 @@
 <?php
 require('fpdf/fpdf.php');
+session_start();
 
 // Database connection
 $servername = "localhost";
@@ -86,18 +87,99 @@ class PDF extends FPDF
         $this->SetFont('Helvetica', '', 8);
         $this->SetTextColor(0);
         foreach ($data as $row) {
-            $this->Cell($widths[0], 8, $row['#'], 1, 0, 'C');
-            $this->Cell($widths[1], 8, $row['product'], 1, 0, 'L');
-            $this->Cell($widths[2], 8, $row['category'], 1, 0, 'L');
-            $this->Cell($widths[3], 8, $row['shop'], 1, 0, 'L');
-            $this->Cell($widths[4], 8, $row['seller'], 1, 0, 'L');
-            $this->Cell($widths[5], 8, number_format($row['click_count']), 1, 0, 'C');
-            $this->Cell($widths[6], 8, $row['date_posted'], 1, 0, 'C');
-            $this->Ln();
+        $cellData =[
+            $row['#'],
+            $row['product'],
+            $row['category'],
+            $row['shop'],
+            $row['seller'],
+            number_format($row['click_count']),
+            $row['date_posted']
+        ];
+        $maxHeight = 0;
+        $cellHeights = [];
+        foreach ($cellData as $i => $text) {
+            // Create a temporary MultiCell to calculate required height
+            $nbLines = $this->NbLines($widths[$i], $text); // Calculate number of lines needed
+            $cellHeight = $nbLines * 6; // Each line has a height of 6
+            $cellHeights[$i] = $cellHeight;
+    
+            if ($cellHeight > $maxHeight) {
+                $maxHeight = $cellHeight; // Update maximum height for the row
+            }
+        }
+    
+        // Render each cell with consistent row height
+        foreach ($cellData as $i => $text) {
+            $x = $this->GetX();
+            $y = $this->GetY();
+    
+            // Draw a cell box with maximum height, even for MultiCell
+            $this->Rect($x, $y, $widths[$i], $maxHeight);
+    
+            // Print content using MultiCell within the defined box
+            $this->MultiCell($widths[$i], 6, $text, 0, 'C');
+    
+            // Set the X position for the next cell
+            $this->SetXY($x + $widths[$i], $y);
+        }
+    
+        // Move to the next row
+        $this->Ln($maxHeight);
+    }
+    
+    
+}
+function NbLines($width, $text) {
+    $cw = $this->CurrentFont['cw'];
+    if ($width == 0) {
+        $width = $this->w - $this->rMargin - $this->x;
+    }
+    $wmax = ($width - 2 * $this->cMargin) * 1000 / $this->FontSize;
+    $s = str_replace("\r", '', $text);
+    $nb = strlen($s);
+    if ($nb > 0 && $s[$nb - 1] == "\n") {
+        $nb--;
+    }
+    $sep = -1;
+    $i = 0;
+    $j = 0;
+    $l = 0;
+    $nl = 1;
+    while ($i < $nb) {
+        $c = $s[$i];
+        if ($c == "\n") {
+            $i++;
+            $sep = -1;
+            $j = $i;
+            $l = 0;
+            $nl++;
+            continue;
+        }
+        if ($c == ' ') {
+            $sep = $i;
+        }
+        $l += $cw[$c];
+        if ($l > $wmax) {
+            if ($sep == -1) {
+                if ($i == $j) {
+                    $i++;
+                }
+            } else {
+                $i = $sep + 1;
+            }
+            $sep = -1;
+            $j = $i;
+            $l = 0;
+            $nl++;
+        } else {
+            $i++;
         }
     }
+    return $nl;
 }
 
+}
 // Generate the PDF
 $pdf = new PDF();
 $pdf->AddPage();
@@ -111,6 +193,18 @@ $pdf->ProductTable($header, $reportData);
 
 // Output the PDF to browser
 $pdf->Output('I', 'Product_Report.pdf'); // 'I' outputs to the browser instead of downloading
+
+
+
+//activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+$activityType = "Print Report";
+$insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+$insert_stmt = $conn->prepare($insert_sql);
+$insert_stmt->bind_param("ss", $userEmail, $activityType); //since naka session_start() yung $userEmail na variable ba ay universal
+$insert_stmt->execute();
+$insert_stmt->close();
+
+
 
 $stmt->close();
 $con->close();

@@ -104,7 +104,7 @@ try {
     <div class="modal-overlay"></div>
     <div class="modal">
         <span class="close-modal">X</span>
-        <h3>Shop Profile</h3>
+        <h3>Shop Profile new</h3>
         <p><strong>Seller Name:</strong> <span id="modal-name"></span></p>
         <p><strong>Contact Number:</strong> <span id="modal-contact"></span></p>
         <p><strong>Shop Name:</strong> <span id="modal-shop"></span></p>

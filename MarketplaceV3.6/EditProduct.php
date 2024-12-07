@@ -4,6 +4,7 @@ include '../registration-process/conn.php';
 if (isset($_GET['product_id'])) { // Display product based on product ID
     $product_id = intval($_GET['product_id']); 
 
+    
     // Fetch product details
     $sql = "SELECT * FROM tb_products WHERE product_id = ?";
     $stmt = $conn->prepare($sql);

@@ -10,7 +10,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception('Invalid request method.');
     }
-
+  
     // Validate product ID
     $product_id = $_POST['product_id'] ?? '';
     if (!$product_id) {

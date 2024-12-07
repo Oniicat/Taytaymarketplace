@@ -4,6 +4,7 @@ include '../registration-process/conn.php';
 session_start();
 $response = ['success' => false, 'message' => ''];
 
+// taenamo
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate required fields
