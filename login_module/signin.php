@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Check user credentials
+  
     $sql = "SELECT users.*, shops.shop_id, shops.*, profiles.profiles_id 
             FROM users 
             INNER JOIN shops ON shops.seller_id = users.seller_id
@@ -20,18 +20,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        // Debugging output to check the user data
-        var_dump($user); // Uncomment for debugging
+        
+        var_dump($user);
 
         if (password_verify($password, $user['password'])) {
-            // Update last login time
+            //last login time
             $updateSql = "UPDATE users SET lastlogin_time = CURRENT_TIMESTAMP WHERE email = ?";
             $updateStmt = $conn->prepare($updateSql);
             $updateStmt->bind_param("s", $email);
             $updateStmt->execute();
             $updateStmt->close();
 
-            // Activity log of logins
+            // activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
             $activityType = "Logged In";
             $insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
             $insert_stmt = $conn->prepare($insert_sql);
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $insert_stmt->execute();
             $insert_stmt->close();
 
-            // Redirect based on profile status
+          
             $_SESSION['shop_id'] = $user['shop_id'];
             $_SESSION['seller_id'] = $user['seller_id'];
             $_SESSION['shop_name'] = $user['shop_name'];

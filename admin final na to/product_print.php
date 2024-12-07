@@ -1,5 +1,6 @@
 <?php
 require('fpdf/fpdf.php');
+session_start();
 
 // Database connection
 $servername = "localhost";
@@ -111,6 +112,18 @@ $pdf->ProductTable($header, $reportData);
 
 // Output the PDF to browser
 $pdf->Output('I', 'Product_Report.pdf'); // 'I' outputs to the browser instead of downloading
+
+
+
+//activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+$activityType = "Print Report";
+$insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+$insert_stmt = $conn->prepare($insert_sql);
+$insert_stmt->bind_param("ss", $userEmail, $activityType); //since naka session_start() yung $userEmail na variable ba ay universal
+$insert_stmt->execute();
+$insert_stmt->close();
+
+
 
 $stmt->close();
 $con->close();

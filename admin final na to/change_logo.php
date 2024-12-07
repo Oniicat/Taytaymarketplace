@@ -62,6 +62,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $error_message = "Sorry, there was an error uploading your file.";
         }
+
+            //activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+
+$activityType = "Update Logo";
+$insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+$insert_stmt = $conn->prepare($insert_sql);
+$insert_stmt->bind_param("ss", $userEmail, $activityType);
+$insert_stmt->execute();
+$insert_stmt->close();
+
+
+
+        
         // Redirect back to the change_logo page after the upload
         header('Location: main.php?page=change_logo');
         exit();

@@ -32,6 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
         // Success message
         $_SESSION['message_type'] = 'success';
         $_SESSION['message'] = 'Content updated successfully!';
+
+
+//activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+$activityType = "Update Data Privacy/Terms and Conditions";
+$insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+$insert_stmt = $conn->prepare($insert_sql);
+$insert_stmt->bind_param("ss", $userEmail, $activityType);
+$insert_stmt->execute();
+$insert_stmt->close();
+
+
+
     } else {
         // Error message
         $_SESSION['message_type'] = 'error';
