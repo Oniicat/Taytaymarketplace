@@ -33,7 +33,7 @@ class PDF extends FPDF {
         $this->Ln(5);
 
         // Define column widths
-        $widths = [15, 30, 20, 25, 40, 40, 25]; // Adjusted column widths after removing shop description
+        $widths = [15, 30, 40, 25, 30, 30, 25]; // Adjusted column widths after removing shop description
 
         // Add the table header
         $this->SetFont('Helvetica', 'B', 9); // Slightly smaller font for the header
@@ -57,34 +57,91 @@ class PDF extends FPDF {
                 $row['municipality'],
                 number_format($row['products'])
             ];
-
-            // Calculate the maximum height for the row
+        
+            // Pre-calculate the maximum height for the row
             $maxHeight = 0;
-            $multiCellHeights = [];
+            $cellHeights = [];
             foreach ($cellData as $i => $text) {
-                // Calculate the number of lines for each cell based on width
-                $lineCount = ceil($this->GetStringWidth($text) / $widths[$i]);
-                // Calculate the height for each cell
-                $cellHeight = $lineCount * 6; // Default line height
-                $multiCellHeights[$i] = $cellHeight;
-
-                // Update the maximum row height
+                // Create a temporary MultiCell to calculate required height
+                $nbLines = $this->NbLines($widths[$i], $text); // Calculate number of lines needed
+                $cellHeight = $nbLines * 6; // Each line has a height of 6
+                $cellHeights[$i] = $cellHeight;
+        
                 if ($cellHeight > $maxHeight) {
-                    $maxHeight = $cellHeight;
+                    $maxHeight = $cellHeight; // Update maximum height for the row
                 }
             }
-
-            // Draw each cell in the row
+        
+            // Render each cell with consistent row height
             foreach ($cellData as $i => $text) {
                 $x = $this->GetX();
                 $y = $this->GetY();
-                $this->MultiCell($widths[$i], 6, $text, 1, 'L');
-                $this->SetXY($x + $widths[$i], $y); // Move to the next cell
+        
+                // Draw a cell box with maximum height, even for MultiCell
+                $this->Rect($x, $y, $widths[$i], $maxHeight);
+        
+                // Print content using MultiCell within the defined box
+                $this->MultiCell($widths[$i], 6, $text, 0, 'C');
+        
+                // Set the X position for the next cell
+                $this->SetXY($x + $widths[$i], $y);
             }
-
-            $this->Ln($maxHeight); // Move to the next row based on the tallest cell height
+        
+            // Move to the next row
+            $this->Ln($maxHeight);
         }
+        
+        
     }
+    function NbLines($width, $text) {
+        $cw = $this->CurrentFont['cw'];
+        if ($width == 0) {
+            $width = $this->w - $this->rMargin - $this->x;
+        }
+        $wmax = ($width - 2 * $this->cMargin) * 1000 / $this->FontSize;
+        $s = str_replace("\r", '', $text);
+        $nb = strlen($s);
+        if ($nb > 0 && $s[$nb - 1] == "\n") {
+            $nb--;
+        }
+        $sep = -1;
+        $i = 0;
+        $j = 0;
+        $l = 0;
+        $nl = 1;
+        while ($i < $nb) {
+            $c = $s[$i];
+            if ($c == "\n") {
+                $i++;
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+                continue;
+            }
+            if ($c == ' ') {
+                $sep = $i;
+            }
+            $l += $cw[$c];
+            if ($l > $wmax) {
+                if ($sep == -1) {
+                    if ($i == $j) {
+                        $i++;
+                    }
+                } else {
+                    $i = $sep + 1;
+                }
+                $sep = -1;
+                $j = $i;
+                $l = 0;
+                $nl++;
+            } else {
+                $i++;
+            }
+        }
+        return $nl;
+    }
+    
 }
 
 // Database connection
