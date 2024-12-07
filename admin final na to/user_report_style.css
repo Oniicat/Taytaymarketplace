@@ -55,7 +55,8 @@ table {
 
 table th,
 table td {
-    text-align: left;
+    text-align: justify;
+    vertical-align: top;
     padding: 15px;
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
