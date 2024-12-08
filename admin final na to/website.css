@@ -27,7 +27,7 @@ body {
     font-size: 16px;
     border: 2px solid #ccc;
     border-radius: 4px;
-    height: 80px; /* Increased height */
+    height: 250px; /* Increased height */
     box-sizing: border-box;
     margin-bottom: 20px;
     resize: vertical; /* Allow vertical resize */

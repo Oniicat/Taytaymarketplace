@@ -3,6 +3,8 @@ include 'conn.php'; // Connect to the database
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
@@ -16,14 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
     // Prepare the SQL statement using MySQLi
-    $stmt = $conn->prepare("INSERT INTO accounts (email, password) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO accounts (email, first_name, last_name, password) VALUES (?, ?, ?, ?)");
     if ($stmt === false) {
         echo "Error preparing statement: " . $conn->error;
         exit();
     }
 
     // Bind the parameters
-    $stmt->bind_param("ss", $email, $hashed_password); // "ss" indicates two strings
+    $stmt->bind_param("ssss", $email, $first_name, $last_name, $hashed_password); // "ss" indicates two strings
 
     // Execute the statement
     if ($stmt->execute()) {
@@ -31,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $last_id = $conn->insert_id;
 
         // Redirect to seller-info page with the seller ID
-        header("Location: shop-info.php?seller_id=" . $last_id);
+        header("Location: add-shop.php?seller_id=" . $last_id);
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -56,6 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="POST">
             <label for="email">Email Address:</label>
             <input type="email" name="email" required><br>
+
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" required><br>
+
+            <label for="last_name">Last name:</label>
+            <input type="text" name="last_name" required><br>
             
             <label for="password">Password:</label>
             <input type="password" name="password" required><br>

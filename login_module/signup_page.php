@@ -65,92 +65,148 @@ foreach ($content_keys as $content_key) {
         color: #712798;
         transform: scale(1.05); 
     }
+    .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 40px; /* Adjust for icon spacing */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-icon {
+    position: absolute;
+    right: 10px;
+    color: #aaa;
+}
+
+.input-container input:focus {
+    border-color: #712798;
+}
       </style>
 </head>
 <body>
     <a href="../MarketplaceV3.6/Market_Place_Dashboard.php" class="back-btn">Back</a>
 
     <form action="signup.php" method="POST">
-        <!-- Sign Up Panel -->
-        <div class="signup-panel">
+    <div class="signup-panel">
+        <div class="signup-logo">
+            <img src="<?php echo (file_exists('logo_path.txt') && trim(file_get_contents('logo_path.txt'))) ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo">
+        </div>
+
+        <div class="form-container">
+
+            <!-- Left Side -->
+            <div class="left-side">
+               
+                  <!-- UserName -->
+                  <div class="form-group">
+                    <label for="first-name">Username</label>
+                    <div class="input-container">
+                        <input type="text" id="user_name" name="user_name" required>
+                        <span class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- First Name -->
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <div class="input-container">
+                        <input type="text" id="first-name" name="first_name" required>
+                        <span class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                </div>
+
+
+                <!-- Middle Name -->
+                <div class="form-group">
+                    <label for="middle-name">Middle Name</label>
+                    <div class="input-container">
+                        <input type="text" id="middle-name" name="middle_name">
+                        <span class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                </div>
+                <!-- Last Name -->
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <div class="input-container">
+                        <input type="text" id="last-name" name="last_name" required>
+                        <span class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
             
-       
-            <div class="signup-logo">
-                <img src="images/TaytayTianggeIcon.png" alt="Logo">
-            </div>
 
-            <!-- Email -->  
-            <div class="form-group">
-                <label for="signup-email">Email</label>
-                <div class="email-container">
-                    <input type="email" id="signup-email" name="email" required>
-                    <span class="email-icon">
-                        <i class="fas fa-envelope"></i>
-                    </span>
+
+            <!-- Right Side -->
+            <div class="right-side">
+                 <!-- Email -->
+                 <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <div class="email-container">
+                        <input type="email" id="signup-email" name="email" required>
+                        <span class="email-icon">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="signup-password" name="password" required>
+                        <span class="password-toggle" id="toggle-signup-password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <div class="password-container">
+                        <input type="password" id="confirm-password" name="confirm_password" required>
+                        <span class="password-toggle" id="toggle-confirm-password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
-
-            <!-- Password -->
-            <div class="form-group">
-                <label for="signup-password">Password</label>
-                <div class="password-container">
-                    <input type="password" id="signup-password" name="password" required>
-                    <span class="password-toggle" id="toggle-signup-password">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <div class="password-container">
-                    <input type="password" id="confirm-password" name="confirm_password" required>
-                    <span class="password-toggle" id="toggle-confirm-password">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-            </div>
-
-            <!-- Terms & Privacy Links -->
-<div class="terms-links">
-    <label>
-        <input type="checkbox" id="agree-terms" name="terms" required>
-        <a href="#" id="open-terms-signup">I agree to the Terms & Conditions</a>
-    </label>
-    <div style="margin-bottom: 15px;"></div> <!-- Adjust gap here -->
-    <label>
-        <input type="checkbox" id="agree-privacy" name="privacy" required>
-        <a href="#" id="open-privacy-signup">I agree to the Data Privacy Policy</a>
-    </label>
-</div>
-
-
-            <button type="submit" id="signup-btn">Sign Up</button>
-
-            
         </div>
-    </form>
-    <!-- Terms Popup Modal -->
-    <div class="popup" id="terms-popup">
-        <div class="popup-content">
-            <h2>Terms and Conditions</h2>
-            <p class="details-text"><?php echo $content_texts['Terms']; ?></p>
-           
-            <button class="close-btn" onclick="closeTermsPopup()">Close</button>
+
+        <!-- Terms & Privacy Links -->
+        <div class="terms-links">
+            <label>
+                <input type="checkbox" id="agree-terms" name="terms" required>
+                <a href="#" id="open-terms-signup">I agree to the Terms & Conditions</a>
+            </label>
+            <div style="margin-bottom: 15px;"></div> <!-- Adjust gap here -->
+            <label>
+                <input type="checkbox" id="agree-privacy" name="privacy" required>
+                <a href="#" id="open-privacy-signup">I agree to the Data Privacy Policy</a>
+            </label>
         </div>
+
+        <button type="submit" id="signup-btn">Sign Up</button>
     </div>
-
-    <!-- Privacy Popup Modal -->
-    <div class="popup" id="privacy-popup">
-        <div class="popup-content">
-            <h2>Data Privacy Policy</h2>
-            <p class="details-text"><?php echo $content_texts['DataPrivacy']; ?></p>
-           
-            <button class="close-btn" onclick="closePrivacyPopup()">Close</button>
-        </div>
-    </div>
-
+</form>
 
     <div class="login-container">
         <div class="logintextsgroup">

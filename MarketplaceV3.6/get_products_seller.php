@@ -10,7 +10,11 @@ $category = isset($_GET['category']) ? trim($_GET['category']) : '';
 
 // Prepare SQL query based on whether a category is provided
 if (!empty($category)) {
-    $sql = "SELECT * FROM tb_products WHERE category = ? AND seller_id = ?";
+    $sql = "SELECT p.*, pi.images 
+            FROM tb_products p
+            LEFT JOIN tb_product_images pi ON p.product_id = pi.product_id 
+            WHERE p.category = ? AND p.seller_id = ?
+            GROUP BY p.product_id";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
         $stmt->bind_param("si", $category, $_SESSION['seller_id']);
@@ -22,7 +26,11 @@ if (!empty($category)) {
     }
 } else {
     // Fetch all products if no category is specified
-    $sql = "SELECT * FROM tb_products WHERE seller_id = ?";
+    $sql = "SELECT p.*, pi.images
+            FROM tb_products p
+            LEFT JOIN tb_product_images pi ON p.product_id = pi.product_id
+            WHERE p.seller_id = ?
+            GROUP BY p.product_id";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $_SESSION['seller_id']);
     if (!$stmt) {

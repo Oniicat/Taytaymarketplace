@@ -374,7 +374,7 @@ input, textarea {
 .category-list {
     display: none;
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 0;
     width: 100%;
     background-color: white;
@@ -385,6 +385,7 @@ input, textarea {
 }
 
 .category-list.show {
+    top: auto;
     display: block;
 }
 

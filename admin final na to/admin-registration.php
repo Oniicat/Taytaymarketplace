@@ -3,12 +3,12 @@ include 'dbcon.php';
 
 // Fetch pending sellers
 $query = "
-    SELECT si.seller_id, si.first_name, si.last_name, si.contact_number, si.shop_name, 
-           si.stall_number, si.municipality, si.baranggay, si.business_permit_number, 
-           si.permit_image, si.status 
+    SELECT si.seller_id, si.seller_name, si.shop_name, si.contact_number,
+           si.stall_number, si.business_permit_number, 
+           si.permit_image 
     FROM registration si
     JOIN users s ON si.seller_id = s.seller_id
-    WHERE si.status = 'pending'
+    
 ";
 
 $sellers = [];
@@ -41,8 +41,7 @@ if ($result = $conn->query($query)) {
                     <th>Contact Number</th>
                     <th>Shop Name</th>
                     <th>Stall Number</th>
-                    <th>Municipality</th>
-                    <th>Barangay</th>
+
                     <th>Action</th>
                 </tr>
             </thead>
@@ -50,21 +49,18 @@ if ($result = $conn->query($query)) {
                 <?php foreach ($sellers as $index => $seller): ?>
                 <tr id="row-<?= htmlspecialchars($seller['seller_id']) ?>">
                     <td><?= $index + 1 ?></td>
-                    <td><?= htmlspecialchars($seller['first_name'] . ' ' . $seller['last_name']) ?></td>
+                    <td><?= htmlspecialchars($seller['seller_name'])?></td>
                     <td><?= htmlspecialchars($seller['contact_number']) ?></td>
                     <td><?= htmlspecialchars($seller['shop_name']) ?></td>
                     <td><?= htmlspecialchars($seller['stall_number']) ?></td>
-                    <td><?= htmlspecialchars($seller['municipality']) ?></td>
-                    <td><?= htmlspecialchars($seller['baranggay']) ?></td>
+
                     <td>
                         <button class="view-btn" 
                             data-id="<?= htmlspecialchars($seller['seller_id']) ?>" 
-                            data-name="<?= htmlspecialchars($seller['first_name'] . ' ' . $seller['last_name']) ?>" 
+                            data-name="<?= htmlspecialchars($seller['seller_name'])?>" 
                             data-contact="<?= htmlspecialchars($seller['contact_number']) ?>" 
                             data-shop="<?= htmlspecialchars($seller['shop_name']) ?>" 
                             data-stall="<?= htmlspecialchars($seller['stall_number']) ?>" 
-                            data-municipality="<?= htmlspecialchars($seller['municipality']) ?>" 
-                            data-baranggay="<?= htmlspecialchars($seller['baranggay']) ?>"
                             data-business-permit="<?= htmlspecialchars($seller['business_permit_number']) ?>"
                             data-permit-image="<?= htmlspecialchars($seller['permit_image']) ?>">View More</button>
                     </td>
@@ -83,8 +79,7 @@ if ($result = $conn->query($query)) {
         <p><strong>Contact Number:</strong> <span id="modal-contact"></span></p>
         <p><strong>Shop Name:</strong> <span id="modal-shop"></span></p>
         <p><strong>Stall Number:</strong> <span id="modal-stall"></span></p>
-        <p><strong>Municipality:</strong> <span id="modal-municipality"></span></p>
-        <p><strong>Barangay:</strong> <span id="modal-baranggay"></span></p>
+     
         <p><strong>Business Permit Number:</strong> <span id="modal-business-permit"></span></p>
         <p><strong>Permit Image:</strong> <a id="modal-permit-image" href="" target="_blank">View Image</a></p>
 
@@ -104,8 +99,7 @@ const modalName = document.getElementById('modal-name');
 const modalContact = document.getElementById('modal-contact');
 const modalShop = document.getElementById('modal-shop');
 const modalStall = document.getElementById('modal-stall');
-const modalMunicipality = document.getElementById('modal-municipality');
-const modalBaranggay = document.getElementById('modal-baranggay');
+
 const modalBusinessPermit = document.getElementById('modal-business-permit');
 const modalPermitImage = document.getElementById('modal-permit-image');
 
@@ -145,8 +139,7 @@ function updateTable(sellers) {
                         data-contact="${seller.contact_number}" 
                         data-shop="${seller.shop_name}" 
                         data-stall="${seller.stall_number}" 
-                        data-municipality="${seller.municipality}" 
-                        data-baranggay="${seller.baranggay}"
+                      
                         data-business-permit="${seller.business_permit_number}"
                         data-permit-image="${seller.permit_image}">View More</button>
                 </td>
@@ -165,8 +158,7 @@ document.addEventListener('click', (event) => {
         modalContact.textContent = button.dataset.contact;
         modalShop.textContent = button.dataset.shop;
         modalStall.textContent = button.dataset.stall;
-        modalMunicipality.textContent = button.dataset.municipality;
-        modalBaranggay.textContent = button.dataset.baranggay;
+      
         modalBusinessPermit.textContent = button.dataset.businessPermit;
         modalPermitImage.href = '' + button.dataset.permitImage;
 

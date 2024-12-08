@@ -37,6 +37,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
         $update_stmt = $conn->prepare($update_query);
         $update_stmt->bind_param("ss", $new_content, $content_key);
 
+//activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+$activityType = "Changed Website details";
+$userName = "Admin"; // Default user name
+
+$conn->begin_transaction();
+try {
+    $insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+    $insert_stmt = $conn->prepare($insert_sql);
+    $insert_stmt->bind_param("ss", $userName, $activityType);
+
+    if (!$insert_stmt->execute()) {
+        throw new Exception("Activity log insertion failed: " . $insert_stmt->error);
+    }
+
+    $insert_stmt->close();
+    $conn->commit();
+} catch (Exception $e) {
+    $conn->rollback();
+    error_log($e->getMessage());
+}
+
+
+
         // Execute the update query and provide feedback
         if ($update_stmt->execute()) {
             $update_message = "<p style='color: green;'>Content updated successfully!</p>";

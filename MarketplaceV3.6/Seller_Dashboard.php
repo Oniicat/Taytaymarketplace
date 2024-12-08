@@ -1,4 +1,12 @@
 <?php
+
+// Start the session
+session_start();
+
+// Save the shop_id to session
+$_SESSION['shop_id'] = $_GET['shop_id'];  // Assuming the shop_id is passed via the URL
+
+
 //map location 
 $latitude = 14.557675; 
 $longitude = 121.132690; 
@@ -92,14 +100,14 @@ function getPopularProducts() {
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <title>Seller Dashboard</title>
+  <title>Seller Dashboard ng mamamo</title>
 </head>
 <body>
 <!-- Navbar -->
 <div class="custom-navbar">
     <div class="navbar-center">
         <a href="MarketPlace(Seller).php">
-        <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
+        <img src="<?php echo (file_exists('logo_path.txt') && trim(file_get_contents('logo_path.txt'))) ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="navbar-logo">
         </a> 
         <!-- Logout Button -->
         <button class="logout-btn" onclick="window.location.href = '../login_module/signin_page.php';">Log Out</button>
@@ -300,7 +308,7 @@ function filterByCategory(category) {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -364,7 +372,7 @@ async function handleLatest() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -439,7 +447,7 @@ document.querySelector('.Latest-button').addEventListener('click', function () {
         const productWidget = `
           <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
             <div class="product-image">
-              <img src="${product.product_image}" alt="Product Image">
+              <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
             </div>
             <div class="product-info">
               <h3>${product.product_name}</h3>
@@ -504,7 +512,7 @@ async function fetchAllPopularProducts() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -541,7 +549,7 @@ document.querySelector('.popular-button').addEventListener('click', function () 
 });
 
 
-// Function for products to be displayed on widgets
+//------------------------------Function for products to be displayed on widgets--------------------
 async function fetchProducts(category = '') { 
   try {
       // Fetch products from the server, passing the selected category (empty by default)
@@ -559,7 +567,7 @@ async function fetchProducts(category = '') {
           <div class="product-widget" onclick="redirectToEditProduct(${product.product_id})">
             
               <div class="product-image">
-                <img src="${product.product_image}" alt="Product Image">
+                <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
               </div>
 
             <div class="product-info">

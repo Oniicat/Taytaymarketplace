@@ -12,9 +12,11 @@ if ($conn->connect_error) {
 
 try {
     // Prepare the SQL query
-    $query = "SELECT seller_id, first_name, middle_name, last_name, contact_number, municipality, 
-              baranggay, shop_name, stall_number, business_permit_number, permit_image 
-              FROM shops ORDER BY created_at DESC";
+    $query = "SELECT si.seller_id, si.shop_name, si.stall_number, 
+           si.business_permit_number, si.permit_image, si.shop_profile_pic, si.contact_number, si.shop_description, si.lazada_link, 
+           si.shopee_link, si.created_at, s.first_name, s.last_name
+    FROM registered_shops si
+    JOIN accounts s ON si.seller_id = s.seller_id";
 
     // Execute the query
     $stmt = $conn->prepare($query);

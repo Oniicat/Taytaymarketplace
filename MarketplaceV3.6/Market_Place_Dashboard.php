@@ -102,7 +102,7 @@ function getPopularProducts() {
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
    
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <title>Market Place Dashboard</title>
+  <title>Marketplace Dashboard</title>
 <style>
  body {
     background-color: #F4F4F4;
@@ -116,7 +116,7 @@ function getPopularProducts() {
   <!-- Navbar -->
   <div class="custom-navbar">
     <div class="navbar-center">
-      <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
+      <img src="<?php echo file_exists('logo_path.txt') ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="navbar-logo">
 
 
       <!-- Get Directions btn -->
@@ -223,7 +223,7 @@ function getPopularProducts() {
 
 <!-- Details Container -->
 <div class="details-container">
-      <h2 class="details-title">Taytay Tiangge</h2>
+      <h2 class="details-title">Taytay Marketplace</h2>
       <p class="details-text"><?php echo $content_texts['Address']; ?></p>
       <p class="details-text"><strong><?php echo $content_texts['OpeningClosing']; ?></strong></p>
       <div class="from-section">
@@ -290,7 +290,7 @@ function getPopularProducts() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -357,7 +357,7 @@ async function handleLatest() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -439,7 +439,7 @@ document.querySelector('.Latest-button').addEventListener('click', function () {
         const productWidget = `
           <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
             <div class="product-image">
-              <img src="${product.product_image}" alt="Product Image">
+              <img src="${product.images}" alt="Product Image">
             </div>
             <div class="product-info">
               <h3>${product.product_name}</h3>
@@ -513,7 +513,7 @@ async function fetchAllPopularProducts() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -576,7 +576,7 @@ async function fetchProducts(category = '') {
           <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
             
               <div class="product-image">
-                <img src="${product.product_image}" alt="Product Image">
+                <img src="${product.images}" alt="Product Image">
               </div>
 
             <div class="product-info">
