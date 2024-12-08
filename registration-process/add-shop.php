@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Fetch first_name and last_name from accounts table
-    $stmt = $conn->prepare("SELECT first_name, last_name FROM accounts WHERE seller_id = ?");
+    $stmt = $conn->prepare("SELECT first_name, last_name FROM users WHERE seller_id = ?");
     $stmt->bind_param("i", $seller_id);
     $stmt->execute();
     $stmt->bind_result($first_name, $last_name);

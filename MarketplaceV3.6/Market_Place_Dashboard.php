@@ -290,7 +290,7 @@ function getPopularProducts() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -357,7 +357,7 @@ async function handleLatest() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -439,7 +439,7 @@ document.querySelector('.Latest-button').addEventListener('click', function () {
         const productWidget = `
           <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
             <div class="product-image">
-              <img src="${product.product_image}" alt="Product Image">
+              <img src="${product.images}" alt="Product Image">
             </div>
             <div class="product-info">
               <h3>${product.product_name}</h3>
@@ -513,7 +513,7 @@ async function fetchAllPopularProducts() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -576,7 +576,7 @@ async function fetchProducts(category = '') {
           <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
             
               <div class="product-image">
-                <img src="${product.product_image}" alt="Product Image">
+                <img src="${product.images}" alt="Product Image">
               </div>
 
             <div class="product-info">

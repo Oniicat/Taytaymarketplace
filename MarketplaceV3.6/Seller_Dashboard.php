@@ -300,7 +300,7 @@ function filterByCategory(category) {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -364,7 +364,7 @@ async function handleLatest() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -439,7 +439,7 @@ document.querySelector('.Latest-button').addEventListener('click', function () {
         const productWidget = `
           <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
             <div class="product-image">
-              <img src="${product.product_image}" alt="Product Image">
+              <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
             </div>
             <div class="product-info">
               <h3>${product.product_name}</h3>
@@ -504,7 +504,7 @@ async function fetchAllPopularProducts() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -541,7 +541,7 @@ document.querySelector('.popular-button').addEventListener('click', function () 
 });
 
 
-// Function for products to be displayed on widgets
+//------------------------------Function for products to be displayed on widgets--------------------
 async function fetchProducts(category = '') { 
   try {
       // Fetch products from the server, passing the selected category (empty by default)
@@ -559,7 +559,7 @@ async function fetchProducts(category = '') {
           <div class="product-widget" onclick="redirectToEditProduct(${product.product_id})">
             
               <div class="product-image">
-                <img src="${product.product_image}" alt="Product Image">
+                <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
               </div>
 
             <div class="product-info">

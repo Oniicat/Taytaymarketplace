@@ -35,12 +35,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
 
 //activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
-$activityType = "Update Data Privacy/Terms and Conditions";
-$insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
-$insert_stmt = $conn->prepare($insert_sql);
-$insert_stmt->bind_param("ss", $userEmail, $activityType);
-$insert_stmt->execute();
-$insert_stmt->close();
+$activityType = "Changed Terms and Condition, Data Privacy";
+$userName = "Admin"; // Default user name
+
+$conn->begin_transaction();
+try {
+    $insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+    $insert_stmt = $conn->prepare($insert_sql);
+    $insert_stmt->bind_param("ss", $userName, $activityType);
+
+    if (!$insert_stmt->execute()) {
+        throw new Exception("Activity log insertion failed: " . $insert_stmt->error);
+    }
+
+    $insert_stmt->close();
+    $conn->commit();
+} catch (Exception $e) {
+    $conn->rollback();
+    error_log($e->getMessage());
+}
 
 
 
@@ -53,7 +66,7 @@ $insert_stmt->close();
     $update_stmt->close();
 
     // Reload the page to reflect changes
-    header("Location: " . $_SERVER['PHP_SELF']);
+    header('Location: main.php?page=legaladmin');
     exit();
 }
 $conn->close();

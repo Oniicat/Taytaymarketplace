@@ -21,6 +21,54 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="AddProduct.css">
     <title>Add Product</title>
+    <style>
+        .image-upload-container {
+            margin-bottom: 20px;
+        }
+
+        .image-upload-container label {
+            font-weight: bold;
+        }
+
+        .image-preview-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        .image-preview-container img {
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-image {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 5px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+        #multiple-images-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 200px; /* Set a max height */
+            overflow-y: auto; /* Make it scrollable if it exceeds the height */
+        }
+
+    </style>
 </head>
 <body>
 <!-- Navbar -->
@@ -83,7 +131,14 @@ if ($result->num_rows > 0) {
             <!-- Newly Added Link -->
         </div>
 
+        <!-- Multiple Images Upload -->
+        <div class="image-upload-container">
+            <label for="multiple-images">Upload Additional Images</label>
+            <input type="file" id="multiple-images" multiple accept="image/*" onchange="previewMultipleImages(event)">
+        </div>
 
+        <!-- Display Multiple Images -->
+        <div id="multiple-images-preview" class="image-preview-container"></div>
             
         <!-- Save and Cancel Buttons -->
         <div class="buttons-container">
@@ -143,10 +198,16 @@ async function saveChanges() {
         formData.append(`linkname[${index}]`, title);
     });
 
-    // Handle image upload
-    const imageInput = document.querySelector('#image-input').files[0];
-    if (imageInput) {
-        formData.append('image', imageInput);
+    // Handle major image upload
+    const majorImage = document.querySelector('#image-input').files[0];
+    if (majorImage) {
+        formData.append('major_image', majorImage);
+    }
+
+    // Handle multiple image uploads
+    const multipleImages = document.querySelector('#multiple-images').files;
+    for (let i = 0; i < multipleImages.length; i++) {
+        formData.append('multiple_images[]', multipleImages[i]);
     }
 
     try {
@@ -170,6 +231,49 @@ async function saveChanges() {
     }
 }
 
+// Handle major image upload and preview
+function triggerMajorImageInput() {
+    document.getElementById('image-input').click();
+}
+
+function previewMajorImage(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        const output = document.getElementById('product-image');
+        output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+// Handle multiple images upload and preview
+function previewMultipleImages(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('multiple-images-preview');
+    previewContainer.innerHTML = ''; // Clear previous images
+
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const imgElement = document.createElement('img');
+            imgElement.src = reader.result;
+            imgElement.classList.add('image-preview');
+            
+            // Add remove button to each image
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'X';
+            removeBtn.classList.add('remove-image');
+            removeBtn.onclick = function() {
+                imgElement.remove();
+                removeBtn.remove();
+            };
+
+            // Append the image and remove button to the container
+            previewContainer.appendChild(imgElement);
+            previewContainer.appendChild(removeBtn);
+        };
+        reader.readAsDataURL(file);
+    });
+}
 
 /**
  * Open the modal popup for adding an external link.

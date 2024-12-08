@@ -2,7 +2,7 @@
 include 'dbcon.php';
 
 try {
-    $query = "SELECT seller_id, first_name, middle_name, last_name, contact_number, municipality, baranggay, shop_name, stall_number, business_permit_number, permit_image FROM shops ORDER BY created_at DESC";
+    $query = "SELECT seller_id, seller_name, contact_number,  shop_name, stall_number, business_permit_number, permit_image FROM shops ORDER BY created_at DESC";
     $result = $conn->query($query);
 
     // Fetch all results
@@ -67,8 +67,6 @@ try {
                     <th>Contact Number</th>
                     <th>Shop Name</th>
                     <th>Stall Number</th>
-                    <th>Municipality</th>
-                    <th>Barangay</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -76,21 +74,18 @@ try {
                 <?php foreach ($sellers as $index => $seller): ?>
                 <tr id="row-<?= htmlspecialchars($seller['seller_id']) ?>">
                     <td><?= $index + 1 ?></td>
-                    <td><?= htmlspecialchars($seller['first_name'] . ' ' . $seller['last_name']) ?></td>
                     <td><?= htmlspecialchars($seller['contact_number']) ?></td>
+                    <td><?= htmlspecialchars($seller['seller_name']) ?></td>
                     <td><?= htmlspecialchars($seller['shop_name']) ?></td>
                     <td><?= htmlspecialchars($seller['stall_number']) ?></td>
-                    <td><?= htmlspecialchars($seller['municipality']) ?></td>
-                    <td><?= htmlspecialchars($seller['baranggay']) ?></td>
+                    
                     <td>
                         <button class="view-btn" 
                             data-id="<?= htmlspecialchars($seller['seller_id']) ?>" 
-                            data-name="<?= htmlspecialchars($seller['first_name'] . ' ' . $seller['last_name']) ?>" 
+                            data-name="<?= htmlspecialchars($seller['seller_name']) ?>"
                             data-contact="<?= htmlspecialchars($seller['contact_number']) ?>" 
                             data-shop="<?= htmlspecialchars($seller['shop_name']) ?>" 
                             data-stall="<?= htmlspecialchars($seller['stall_number']) ?>" 
-                            data-municipality="<?= htmlspecialchars($seller['municipality']) ?>" 
-                            data-baranggay="<?= htmlspecialchars($seller['baranggay']) ?>" 
                             data-business-permit="<?= htmlspecialchars($seller['business_permit_number']) ?>" 
                             data-permit-image="<?= htmlspecialchars($seller['permit_image']) ?>">View</button>
                     </td>
@@ -109,22 +104,18 @@ try {
         <p><strong>Contact Number:</strong> <span id="modal-contact"></span></p>
         <p><strong>Shop Name:</strong> <span id="modal-shop"></span></p>
         <p><strong>Stall Number:</strong> <span id="modal-stall"></span></p>
-        <p><strong>Municipality:</strong> <span id="modal-municipality"></span></p>
-        <p><strong>Barangay:</strong> <span id="modal-baranggay"></span></p>
         <p><strong>Business Permit Number:</strong> <span id="modal-business-permit"></span></p>
         <p><strong>Permit Image:</strong> <a id="modal-permit-image" href="" target="_blank">View</a></p>
     </div>
 
     <script>
-        const modal = document.querySelector('.modal');
+ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.modal-overlay');
 const closeModal = document.querySelector('.close-modal');
 const modalName = document.getElementById('modal-name');
 const modalContact = document.getElementById('modal-contact');
 const modalShop = document.getElementById('modal-shop');
 const modalStall = document.getElementById('modal-stall');
-const modalMunicipality = document.getElementById('modal-municipality');
-const modalBaranggay = document.getElementById('modal-baranggay');
 const modalBusinessPermit = document.getElementById('modal-business-permit');
 const modalPermitImage = document.getElementById('modal-permit-image');
 
@@ -139,45 +130,7 @@ overlay.addEventListener('click', () => {
     overlay.style.display = 'none';
 });
 
-// Dynamically update table and re-attach event listeners
-const sellersTable = document.querySelector('tbody');
-
-function updateTable(sellers) {
-    sellersTable.innerHTML = ''; // Clear current rows
-
-    sellers.forEach((seller, index) => {
-        const row = document.createElement('tr');
-        row.id = `row-${seller.seller_id}`;
-
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${seller.first_name} ${seller.last_name}</td>
-            <td>${seller.contact_number}</td>
-            <td>${seller.shop_name}</td>
-            <td>${seller.stall_number}</td>
-            <td>${seller.municipality}</td>
-            <td>${seller.baranggay}</td>
-            <td>
-                <button class="view-btn" 
-                    data-id="${seller.seller_id}" 
-                    data-name="${seller.first_name} ${seller.last_name}" 
-                    data-contact="${seller.contact_number}" 
-                    data-shop="${seller.shop_name}" 
-                    data-stall="${seller.stall_number}" 
-                    data-municipality="${seller.municipality}" 
-                    data-baranggay="${seller.baranggay}" 
-                    data-business-permit="${seller.business_permit_number}" 
-                    data-permit-image="${seller.permit_image}">View</button>
-            </td>
-        `;
-
-        sellersTable.appendChild(row);
-    });
-
-    // Re-attach view button listeners
-    attachViewListeners();
-}
-
+// Attach view button listeners
 function attachViewListeners() {
     document.querySelectorAll('.view-btn').forEach(button => {
         button.addEventListener('click', () => {
@@ -186,10 +139,9 @@ function attachViewListeners() {
             modalContact.textContent = button.dataset.contact;
             modalShop.textContent = button.dataset.shop;
             modalStall.textContent = button.dataset.stall;
-            modalMunicipality.textContent = button.dataset.municipality;
-            modalBaranggay.textContent = button.dataset.baranggay;
             modalBusinessPermit.textContent = button.dataset.businessPermit;
             modalPermitImage.href = button.dataset.permitImage;
+            modalPermitImage.textContent = "View Permit";
 
             // Show modal
             modal.style.display = 'block';
@@ -197,6 +149,10 @@ function attachViewListeners() {
         });
     });
 }
+
+// Initialize listeners on page load
+attachViewListeners();
+
 
 // Fetch sellers periodically
 function fetchSellers() {

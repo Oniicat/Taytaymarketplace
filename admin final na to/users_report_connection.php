@@ -13,8 +13,8 @@ if($con->connect_error){
 //su = data coming from tb_signup
 //si = data coming form tb_shop_info
 //p = data coming from tb_products
-$data_fetch = "SELECT u.seller_id as '#', CONCAT(si.first_name, ' ', si.last_name) AS seller_name, si.shop_name, si.shop_desc as shop_description, si.stall_number, si.business_permit_number,
-    si.municipality,  si.contact_number,
+$data_fetch = "SELECT u.seller_id as '#', CONCAT(u.first_name, ' ', u.last_name) AS seller_name, si.shop_name, si.shop_description as shop_description, si.stall_number, si.business_permit_number,
+      si.contact_number,
     COUNT(p.product_id) AS product_count
     FROM users u
     inner join shops si on u.seller_id = si.seller_id

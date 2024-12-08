@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $last_id = $conn->insert_id;
 
                     // forda next page mossing
-                    header("Location: ../registration-process/shop-info.php?seller_id=" . $last_id);
+                    header("Location: ../registration-process/add-shop.php?seller_id=" . $last_id);
                     exit();
                 } else {
                     echo "<h2>Sign-up failed. Please try again.</h2>";
