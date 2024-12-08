@@ -7,12 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Check user credentials
-    $sql = "SELECT users.*, shops.shop_id, shops.*, profiles.profiles_id 
-            FROM users 
-            INNER JOIN shops ON shops.seller_id = users.seller_id
-            LEFT JOIN profiles ON profiles.shop_id = shops.shop_id
-            WHERE users.email = ?";
+    // Query to check if the email exists and has a seller_id in the users table
+    $sql = "SELECT * FROM users WHERE email = ? AND seller_id IS NOT NULL";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -20,54 +16,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        // Debugging output to check the user data
-        var_dump($user); // Uncomment for debugging
 
+        // Verify the provided password
         if (password_verify($password, $user['password'])) {
-            // Update last login time
+            // Update the last login time
             $updateSql = "UPDATE users SET lastlogin_time = CURRENT_TIMESTAMP WHERE email = ?";
             $updateStmt = $conn->prepare($updateSql);
             $updateStmt->bind_param("s", $email);
             $updateStmt->execute();
             $updateStmt->close();
 
-            // Activity log of logins
+            // Log the activity
             $activityType = "Logged In";
-            $insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
-            $insert_stmt = $conn->prepare($insert_sql);
-            $insert_stmt->bind_param("ss", $user['email'], $activityType); // Use user's email as user_name
-            $insert_stmt->execute();
-            $insert_stmt->close();
+            $insertSql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+            $insertStmt = $conn->prepare($insertSql);
+            $insertStmt->bind_param("ss", $user['email'], $activityType); // Use user's email as user_name
+            $insertStmt->execute();
+            $insertStmt->close();
 
-            // Redirect based on profile status
-            $_SESSION['shop_id'] = $user['shop_id'];
+            // Set session variables
             $_SESSION['seller_id'] = $user['seller_id'];
-            $_SESSION['shop_name'] = $user['shop_name'];
             $_SESSION['user_email'] = $user['email'];
 
-            if ($user['user_type'] === 'Admin') {
-                header("Location: ../admin final na to/main.php");
-                exit();
-            } else {
-            if (!empty($user['profiles_id'])) {
-                header("Location: ../MarketplaceV3.6/MarketPlace(Seller).php");
-                exit();
-            } else {
-                header("Location: signin_SET.PHP");
-                exit();
-            }
-        }
+            // Redirect to the seller's marketplace
+            header("Location: ../MarketplaceV3.6/MarketPlace(Seller).php");
+            exit();
         } else {
+            // Invalid password
             $_SESSION['error_message'] = "Invalid password!";
             header('Location: signin_page.php');
             exit();
         }
     } else {
-        $_SESSION['error_message'] = "Invalid email or password!";
+        // Invalid email or seller_id does not exist
+        $_SESSION['error_message'] = "Invalid email or seller account!";
         header('Location: signin_page.php');
         exit();
     }
-
-
 }
+
+
 ?>

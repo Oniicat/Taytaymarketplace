@@ -27,6 +27,19 @@ if (isset($_GET['token'])) {
         $stmt->bind_param("ss", $new_password, $token);
         $stmt->execute();
 
+
+        $userEmail = $_SESSION['email'];
+
+//activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+$activityType = "Password changed";
+$insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+$insert_stmt = $conn->prepare($insert_sql);
+$insert_stmt->bind_param("ss", $userEmail, $activityType);
+$insert_stmt->execute();
+$insert_stmt->close();
+
+
+
         echo "Password reset successfully!";
         //next is balik sa login para mag login uli
         header("Location: signin_page.php");

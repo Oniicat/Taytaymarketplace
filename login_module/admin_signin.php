@@ -41,33 +41,8 @@ foreach ($content_keys as $content_key) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In - Taytay Tiangge</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="signin.css">
+  <link rel="stylesheet" href="admin_signin.css">
 
-  <style>
-    .back-btn {
-    top: 3%;
-    left: 3%;
-    background-color: white; 
-    color: #712798; 
-    padding: 0.5rem 1rem; 
-    border: 2px solid #712798; 
-    border-radius: 5px; 
-    font-size: 1rem; 
-    position: absolute;
-    text-decoration: none; 
-    display: inline-block; 
-    cursor: pointer;
-    z-index: 1001; 
-    transition: background-color 0.3s, transform 0.3s, color 0.3s;
-}
-
-/* Hover Effect */
-.back-btn:hover {
-    background-color: gray; 
-    color: white;
-    transform: scale(1.05); 
-}
-  </style>
 </head>
 
 <body>
@@ -146,13 +121,6 @@ foreach ($content_keys as $content_key) {
   </div>
 
   <div class="signin-container">
-  <a href="../MarketplaceV3.6/Market_Place_Dashboard.php" class="back-btn">Back</a>
-    <div class="signintextsgroup">
-      <h2>Doesn't have an account?</h2>
-      <p>Please create an account before</p>
-      <p>Logging in.</p>
-      <form action="signup_page.">
-        <button><b>Sign Up</b></button>
       </form>
     </div>
   </div>

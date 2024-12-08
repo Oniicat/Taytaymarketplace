@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taytay Marketplace Admin</title>
+    <title>Adminm Marketplace</title>
     <link rel="stylesheet" href="sidebarstyle.css">
 </head>
 <body>
     <!-- Navbar -->
     <div class="navbar">
-        <a href="index.php">
-            <img src="logo.png" alt="Logo" class="logo">
-        </a>
+    <a href="index.php">
+    <img src="<?php echo (file_exists('logo_path.txt') && trim(file_get_contents('logo_path.txt'))) ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="logo">
+
+</a>
     </div>
 
     <!-- Sidebar -->
@@ -38,6 +39,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="main.php?page=category">Add Category</a></li>
+                    <li><a href="main.php?page=change_logo">Change Logo</a></li>
                     <li><a href="main.php?page=legaladmin">Legal Documents</a></li>
                     <li><a href="main.php?page=websitetextadmin">Website</a></li>
                 </ul>
@@ -49,7 +51,7 @@
     <div class="main-content">
         <?php
         $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-        $allowed_pages = ['accounts', 'dashboard', 'admin-registered-shops', 'products_report', 'settings', 'users_report', 'products', 'activity_log', 'users', 'category', 'websitetextadmin', 'legaladmin', 'archive', 'backup and restore', 'admin-registration'];//name ng mga php file 
+        $allowed_pages = ['change_logo','accounts', 'dashboard', 'admin-registered-shops', 'products_report', 'settings', 'users_report', 'products', 'activity_log', 'users', 'category', 'websitetextadmin', 'legaladmin', 'archive', 'backup and restore', 'admin-registration'];//name ng mga php file 
         if (in_array($page, $allowed_pages)) {
             include("$page.php");
         } else {

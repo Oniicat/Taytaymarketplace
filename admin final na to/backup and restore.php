@@ -1,8 +1,7 @@
 <?php
 require 'dbcon.php';
 // Fetch archived shops and accounts
-$shops_result = $conn->query("SELECT * FROM `archive_shops`");
-$accounts_result = $conn->query("SELECT * FROM `archive_accounts`");
+$accounts_result = $conn->query("SELECT * FROM `archive_users`");
 
 // Handle account retrieval
 if (isset($_POST['retrieve'])) {
@@ -12,7 +11,7 @@ if (isset($_POST['retrieve'])) {
         $conn->begin_transaction();
 
         // Retrieve the archived account details
-        $archive_account_sql = "SELECT * FROM `archive_accounts` WHERE `seller_id` = ?";
+        $archive_account_sql = "SELECT * FROM `archive_users` WHERE `seller_id` = ?";
         $archive_account_stmt = $conn->prepare($archive_account_sql);
         
         if (!$archive_account_stmt) {
@@ -24,9 +23,9 @@ if (isset($_POST['retrieve'])) {
         $archive_account_result = $archive_account_stmt->get_result();
 
         if ($archive_account_result && $archive_account_row = $archive_account_result->fetch_assoc()) {
-            // Insert the data into the `accounts` table
-            $insert_account_sql = "INSERT INTO `users` (`seller_id`, `email`, `password`, `created_at`) 
-                                    VALUES (?, ?, ?, ?)";
+            // Insert the data into the `users` table
+            $insert_account_sql = "INSERT INTO `users` (`seller_id`, `first_name`, `middle_name`, `last_name`, `email`, `password`, `created_at`) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?)";
             $insert_account_stmt = $conn->prepare($insert_account_sql);
 
             if (!$insert_account_stmt) {
@@ -34,8 +33,11 @@ if (isset($_POST['retrieve'])) {
             }
 
             $insert_account_stmt->bind_param(
-                "isss",
+                "issssss",
                 $archive_account_row['seller_id'],
+                $archive_account_row['first_name'],
+                $archive_account_row['middle_name'],
+                $archive_account_row['last_name'],
                 $archive_account_row['email'],
                 $archive_account_row['password'],
                 $archive_account_row['created_at']
@@ -43,7 +45,7 @@ if (isset($_POST['retrieve'])) {
 
             if ($insert_account_stmt->execute()) {
                 // Delete the account from the archive
-                $delete_archive_account_sql = "DELETE FROM `archive_accounts` WHERE `seller_id` = ?";
+                $delete_archive_account_sql = "DELETE FROM `archive_users` WHERE `seller_id` = ?";
                 $delete_archive_account_stmt = $conn->prepare($delete_archive_account_sql);
 
                 if (!$delete_archive_account_stmt) {
@@ -76,69 +78,69 @@ if (isset($_POST['retrieve'])) {
     exit();
 }
 
-if (isset($_POST['retrieve_shop'])) {
-    $shop_id = filter_input(INPUT_POST, 'shop_id', FILTER_VALIDATE_INT);
+// if (isset($_POST['retrieve_shop'])) {
+//     $shop_id = filter_input(INPUT_POST, 'shop_id', FILTER_VALIDATE_INT);
 
-    if ($shop_id) {
-        // Start a transaction
-        $conn->begin_transaction();
+//     if ($shop_id) {
+//         // Start a transaction
+//         $conn->begin_transaction();
 
-        // Retrieve the archived shop details
-        $archive_shop_sql = "SELECT * FROM `archive_shops` WHERE `shop_id` = ?";
-        $archive_shop_stmt = $conn->prepare($archive_shop_sql);
-        $archive_shop_stmt->bind_param("i", $shop_id);
-        $archive_shop_stmt->execute();
-        $archive_shop_result = $archive_shop_stmt->get_result();
+//         // Retrieve the archived shop details
+//         $archive_shop_sql = "SELECT * FROM `archive_shops` WHERE `shop_id` = ?";
+//         $archive_shop_stmt = $conn->prepare($archive_shop_sql);
+//         $archive_shop_stmt->bind_param("i", $shop_id);
+//         $archive_shop_stmt->execute();
+//         $archive_shop_result = $archive_shop_stmt->get_result();
 
-        if ($archive_shop_result && $archive_shop_row = $archive_shop_result->fetch_assoc()) {
-            // Insert the data into the `shops` table (remove the account insertion)
-            $insert_shop_sql = "INSERT INTO `shops` (`shop_id`, `seller_id`, `first_name`, `middle_name`, `last_name`, 
-                                                  `shop_name`, `stall_number`, `business_permit_number`, `permit_image`, 
-                                                  `municipality`, `baranggay`, `contact_number`) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $insert_shop_stmt = $conn->prepare($insert_shop_sql);
+//         if ($archive_shop_result && $archive_shop_row = $archive_shop_result->fetch_assoc()) {
+//             // Insert the data into the `shops` table (remove the account insertion)
+//             $insert_shop_sql = "INSERT INTO `shops` (`shop_id`, `seller_id`, `first_name`, `middle_name`, `last_name`, 
+//                                                   `shop_name`, `stall_number`, `business_permit_number`, `permit_image`, 
+//                                                   `municipality`, `baranggay`, `contact_number`) 
+//                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//             $insert_shop_stmt = $conn->prepare($insert_shop_sql);
 
-            $insert_shop_stmt->bind_param(
-                "iissssssssss",
-                $archive_shop_row['shop_id'],
-                $archive_shop_row['seller_id'],
-                $archive_shop_row['first_name'],
-                $archive_shop_row['middle_name'],
-                $archive_shop_row['last_name'],
-                $archive_shop_row['shop_name'],
-                $archive_shop_row['stall_number'],
-                $archive_shop_row['business_permit_number'],
-                $archive_shop_row['permit_image'],
-                $archive_shop_row['municipality'],
-                $archive_shop_row['baranggay'],
-                $archive_shop_row['contact_number']
-            );
-            $insert_shop_stmt->execute();
+//             $insert_shop_stmt->bind_param(
+//                 "iissssssssss",
+//                 $archive_shop_row['shop_id'],
+//                 $archive_shop_row['seller_id'],
+//                 $archive_shop_row['first_name'],
+//                 $archive_shop_row['middle_name'],
+//                 $archive_shop_row['last_name'],
+//                 $archive_shop_row['shop_name'],
+//                 $archive_shop_row['stall_number'],
+//                 $archive_shop_row['business_permit_number'],
+//                 $archive_shop_row['permit_image'],
+//                 $archive_shop_row['municipality'],
+//                 $archive_shop_row['baranggay'],
+//                 $archive_shop_row['contact_number']
+//             );
+//             $insert_shop_stmt->execute();
 
-            if ($insert_shop_stmt->affected_rows > 0) {
-                // Delete the shop from the archive
-                $delete_archive_shop_sql = "DELETE FROM `archive_shops` WHERE `shop_id` = ?";
-                $delete_archive_shop_stmt = $conn->prepare($delete_archive_shop_sql);
-                $delete_archive_shop_stmt->bind_param("i", $shop_id);
-                $delete_archive_shop_stmt->execute();
+//             if ($insert_shop_stmt->affected_rows > 0) {
+//                 // Delete the shop from the archive
+//                 $delete_archive_shop_sql = "DELETE FROM `archive_shops` WHERE `shop_id` = ?";
+//                 $delete_archive_shop_stmt = $conn->prepare($delete_archive_shop_sql);
+//                 $delete_archive_shop_stmt->bind_param("i", $shop_id);
+//                 $delete_archive_shop_stmt->execute();
 
-                // Commit the transaction
-                $conn->commit();
-                $_SESSION['message_type'] = 'success';
-                $_SESSION['message'] = 'Shop restored successfully without account.';
-            } else {
-                $conn->rollback();
-                $_SESSION['message_type'] = 'error';
-                $_SESSION['message'] = 'Failed to restore the shop.';
-            }
-        } else {
-            $_SESSION['message_type'] = 'error';
-            $_SESSION['message'] = 'Shop not found in the archive.';
-        }
-    }
-    header('Location: main.php?page=backup and restore');
-    exit();
-}
+//                 // Commit the transaction
+//                 $conn->commit();
+//                 $_SESSION['message_type'] = 'success';
+//                 $_SESSION['message'] = 'Shop restored successfully without account.';
+//             } else {
+//                 $conn->rollback();
+//                 $_SESSION['message_type'] = 'error';
+//                 $_SESSION['message'] = 'Failed to restore the shop.';
+//             }
+//         } else {
+//             $_SESSION['message_type'] = 'error';
+//             $_SESSION['message'] = 'Shop not found in the archive.';
+//         }
+//     }
+//     header('Location: main.php?page=backup and restore');
+//     exit();
+// }
 ?>
 <style>
     .body-table {
@@ -228,20 +230,20 @@ table tr:hover {
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header bg">
-                    <h1>Backup Database</h1>
-                        </div>
-                        <div class="card-body">
-                        <a href="backup code.php" class="btn btn-success">Backup Database</a>
-                </div>
+        <div class="card">
+            <div class="card-header bg">
+                <h1>Backup Database</h1>
             </div>
+            <div class="card-body">
+                <a href="backup_code.php" class="btn btn-success">Backup Database</a>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="archive_accounts">
-    <h1>Archive Login Credential</h1>
-    <table border="1">
+    <h1>Users Archive</h1>
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Seller ID</th>
@@ -266,69 +268,18 @@ table tr:hover {
                     echo "<td>
                             <form method='POST'>
                                 <input type='hidden' name='seller_id' value='" . htmlspecialchars($row['seller_id']) . "'>
-                                <button type='submit' name='retrieve'>Retrieve</button>
+                                <button type='submit' name='retrieve' class='btn btn-primary'>Retrieve</button>
                             </form>
                           </td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7'>No archived accounts found.</td></tr>";
+                echo "<tr><td colspan='6' class='text-center'>No archived accounts found.</td></tr>";
             }
             ?>
         </tbody>
     </table>
 </div>
 
-<br><br><br>
-<div class="container">
-    <div class="archive_shops">
-        <h1>Archived Shops</h1>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Shop ID</th>
-                    <th>Seller ID</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Last Name</th>
-                    <th>Contact Number</th>
-                    <th>Municipality</th>
-                    <th>Barangay</th>
-                    <th>Shop Name</th>
-                    <th>Stall Number</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Fetch shops from the archive
-                if ($shops_result->num_rows > 0) {
-                    while ($row = $shops_result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['shop_id']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['seller_id']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['first_name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['middle_name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['last_name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['contact_number']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['municipality']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['baranggay']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['shop_name']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['stall_number']) . "</td>";
-                
-                        echo "<td>
-                                <form method='POST'> 
-                                    <input type='hidden' name='shop_id' value='" . htmlspecialchars($row['shop_id']) . "'>
-                                    <button type='submit' name='retrieve_shop'>Retrieve</button>
-                                </form>
-                              </td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='11'>No archived shops found.</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-</div>
+
+

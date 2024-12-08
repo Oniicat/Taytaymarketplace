@@ -21,6 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ississs",  $shopID, $userEmail, $textarea, $contact_number, $shopee_link, $lazada_link, $municipality);
 
+
+        //activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+        $activityType = "Setup an Account";
+        $insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+        $insert_stmt = $conn->prepare($insert_sql);
+        $insert_stmt->bind_param("ss", $userEmail, $activityType);
+        $insert_stmt->execute();
+        $insert_stmt->close();
+
         if ($stmt->execute()) {
             // next page
            header("Location: ../MarketplaceV3.6/Seller_Dashboard.php");
