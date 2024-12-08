@@ -156,13 +156,13 @@ if ($conn->connect_error) {
 }
 
 // Fetch data from the database
-$query = "SELECT su.seller_id as '#', CONCAT(su.first_name, ' ', su.last_name) AS seller_name, si.shop_name, si.stall_number, si.business_permit_number,
+$query = "SELECT si.shop_id as '#', CONCAT(su.first_name, ' ', su.last_name) AS seller_name, si.shop_name, si.stall_number, si.business_permit_number,
       si.contact_number,
     COUNT(p.product_id) AS products
     FROM users su
     inner join shops si on su.seller_id = si.seller_id
-    LEFT JOIN tb_products p ON si.seller_id = p.seller_id
-    GROUP BY si.seller_id";
+    LEFT JOIN tb_products p ON si.shop_id = p.shop_id
+    GROUP BY si.shop_id";
 $result = $conn->query($query);
 
 if (!$result) {

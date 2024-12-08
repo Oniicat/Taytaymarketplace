@@ -2,7 +2,9 @@
 include 'dbcon.php';
 
 try {
-    $query = "SELECT seller_id, seller_name, contact_number,  shop_name, stall_number, business_permit_number, permit_image FROM shops ORDER BY created_at DESC";
+    $query = "SELECT shops.*, users.* FROM shops
+                INNER JOIN users on users.seller_id = shops.seller_id
+                ORDER BY shops.created_at DESC";
     $result = $conn->query($query);
 
     // Fetch all results
@@ -74,15 +76,15 @@ try {
                 <?php foreach ($sellers as $index => $seller): ?>
                 <tr id="row-<?= htmlspecialchars($seller['seller_id']) ?>">
                     <td><?= $index + 1 ?></td>
+                    <td><?= htmlspecialchars($seller['first_name'] . " " . $seller['last_name']) ?></td>
                     <td><?= htmlspecialchars($seller['contact_number']) ?></td>
-                    <td><?= htmlspecialchars($seller['seller_name']) ?></td>
                     <td><?= htmlspecialchars($seller['shop_name']) ?></td>
                     <td><?= htmlspecialchars($seller['stall_number']) ?></td>
                     
                     <td>
                         <button class="view-btn" 
-                            data-id="<?= htmlspecialchars($seller['seller_id']) ?>" 
-                            data-name="<?= htmlspecialchars($seller['seller_name']) ?>"
+                            data-id="<?= htmlspecialchars($seller['shop_id']) ?>" 
+                            data-name="<?= htmlspecialchars($seller['first_name'] . " " . $seller['last_name']) ?>"
                             data-contact="<?= htmlspecialchars($seller['contact_number']) ?>" 
                             data-shop="<?= htmlspecialchars($seller['shop_name']) ?>" 
                             data-stall="<?= htmlspecialchars($seller['stall_number']) ?>" 
