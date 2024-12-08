@@ -235,7 +235,7 @@ table tr:hover {
                 <h1>Backup Database</h1>
             </div>
             <div class="card-body">
-                <a href="backup_code.php" class="btn btn-success">Backup Database</a>
+                <a href="backup code.php" class="btn btn-success">Backup Database</a>
             </div>
         </div>
     </div>

@@ -54,7 +54,6 @@ class PDF extends FPDF {
                 $row['shop_name'],
                 $row['stall_number'],
                 $row['business_permit_number'],
-                $row['municipality'],
                 number_format($row['products'])
             ];
         
@@ -157,8 +156,8 @@ if ($conn->connect_error) {
 }
 
 // Fetch data from the database
-$query = "SELECT su.seller_id as '#', CONCAT(si.first_name, ' ', si.last_name) AS seller_name, si.shop_name, si.stall_number, si.business_permit_number,
-    si.municipality,  si.contact_number,
+$query = "SELECT su.seller_id as '#', CONCAT(su.first_name, ' ', su.last_name) AS seller_name, si.shop_name, si.stall_number, si.business_permit_number,
+      si.contact_number,
     COUNT(p.product_id) AS products
     FROM users su
     inner join shops si on su.seller_id = si.seller_id
@@ -178,7 +177,7 @@ if ($result->num_rows > 0) {
 }
 
 // Column headers
-$header = ['#', 'SELLER NAME', 'SHOP', 'STALL NO.', 'PERMIT', 'MUNICIPALITY', 'PRODUCTS'];
+$header = ['#', 'SELLER NAME', 'SHOP', 'STALL NO.', 'PERMIT', 'PRODUCTS'];
 
 // Create PDF
 $pdf = new PDF('P', 'mm', 'A4'); // Portrait orientation

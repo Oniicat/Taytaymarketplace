@@ -156,7 +156,7 @@
     <div class="card">
       <h3>Registration</h3>
       <p id="products-count">
-      <?= getCountThisMonth('users');?>
+      <?= getCountThisMonth('registration');?>
       </p>
     </div>
   </div>

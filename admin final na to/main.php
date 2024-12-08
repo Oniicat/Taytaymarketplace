@@ -28,7 +28,7 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="main.php?page=products_report">Products</a></li>
-                    <li><a href="main.php?page=users_report">Users</a></li>
+                    <li><a href="main.php?page=users_report">Shops</a></li>
                     
                 </ul>
             </li>
