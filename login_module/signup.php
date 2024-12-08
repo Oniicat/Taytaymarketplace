@@ -2,7 +2,7 @@
 
 include "../registration-process/conn.php";
 
-
+session_start();
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $last_id = $conn->insert_id;
 
                     // forda next page mossing
+                    $_SESSION['seller_id'] = $last_id;
                     header("Location: ../registration-process/add-shop.php?seller_id=" . $last_id);
                     exit();
                 } else {

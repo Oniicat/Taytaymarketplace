@@ -19,7 +19,7 @@
     <div class="sidebar">
         <ul class="nav-links">
             <li><a href="main.php?page=dashboard">Dashboard</a></li>
-            <li><a href="main.php?page=admin-registration">Seller Registration</a></li>
+            <li><a href="main.php?page=admin-registration1">Seller Registration</a></li>
             <li><a href="main.php?page=admin-registered-shops">Shops</a></li>
             <li><a href="main.php?page=accounts">Accounts</a></li>
             <li class="dropdown">
@@ -51,7 +51,7 @@
     <div class="main-content">
         <?php
         $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-        $allowed_pages = ['change_logo','accounts', 'dashboard', 'admin-registered-shops', 'products_report', 'settings', 'users_report', 'products', 'activity_log', 'users', 'category', 'websitetextadmin', 'legaladmin', 'archive', 'backup and restore', 'admin-registration'];//name ng mga php file 
+        $allowed_pages = ['change_logo','accounts', 'dashboard', 'admin-registered-shops', 'products_report', 'settings', 'users_report', 'products', 'activity_log', 'users', 'category', 'websitetextadmin', 'legaladmin', 'archive', 'backup and restore', 'admin-registration1'];//name ng mga php file 
         if (in_array($page, $allowed_pages)) {
             include("$page.php");
         } else {

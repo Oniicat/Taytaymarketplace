@@ -5,6 +5,8 @@ session_start();
 // Initialize an empty array for the response
 $response = [];
 
+$shop_ID = $_SESSION['shop_id'];
+
 // Get the category from the GET request, or default to an empty string
 $category = isset($_GET['category']) ? trim($_GET['category']) : '';
 
@@ -13,11 +15,11 @@ if (!empty($category)) {
     $sql = "SELECT p.*, pi.images 
             FROM tb_products p
             LEFT JOIN tb_product_images pi ON p.product_id = pi.product_id 
-            WHERE p.category = ? AND p.seller_id = ?
+            WHERE p.category = ? AND p.shop_id = ?
             GROUP BY p.product_id";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        $stmt->bind_param("si", $category, $_SESSION['seller_id']);
+        $stmt->bind_param("si", $category, $shop_ID);
     } else {
         // Handle errors in preparing the statement
         $response['error'] = "Failed to prepare statement: " . $conn->error;
@@ -29,10 +31,10 @@ if (!empty($category)) {
     $sql = "SELECT p.*, pi.images
             FROM tb_products p
             LEFT JOIN tb_product_images pi ON p.product_id = pi.product_id
-            WHERE p.seller_id = ?
+            WHERE p.shop_id = ?
             GROUP BY p.product_id";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $_SESSION['seller_id']);
+    $stmt->bind_param("i", $shop_ID);
     if (!$stmt) {
         // Handle errors in preparing the statement
         $response['error'] = "Failed to prepare statement: " . $conn->error;

@@ -2,14 +2,15 @@
 include "../registration-process/conn.php";
 
 // Assuming $seller_id is provided (e.g., via GET or POST)
-$seller_id = $_GET['seller_id'] ?? 0; // Replace with actual source
+$shop_id = $_GET['shop_id'] ?? 0; // Replace with actual source
 
 // Fetch shop details
-$sql_shop = "SELECT *
-             FROM shops 
-             WHERE seller_id = ?";
+$sql_shop = "SELECT shops.*, users.*
+             FROM shops
+             INNER JOIN users on users.seller_id = shops.seller_id
+             WHERE shop_id = ?";
 $stmt_shop = $conn->prepare($sql_shop);
-$stmt_shop->bind_param("i", $seller_id);
+$stmt_shop->bind_param("i", $shop_id);
 $stmt_shop->execute();
 $result_shop = $stmt_shop->get_result();
 
@@ -19,6 +20,11 @@ if ($result_shop->num_rows > 0) {
     echo "Shop not found.";
     exit; // Stop further execution
 }
+
+
+
+
+
 ?>
 
 
@@ -51,7 +57,7 @@ if ($result_shop->num_rows > 0) {
         <div class="shop-details">
             <h3 class="shop-name"><?php echo htmlspecialchars($shop['shop_name']); ?></h3>
             <p class="shop-contact">Contact: <?php echo htmlspecialchars($shop['contact_number']); ?></p>
-            <p class="shop-municipality">Municipality: <?php echo htmlspecialchars($shop['municipality']); ?></p>
+            <p class="shop-municipality">Shop Owner: <?php echo htmlspecialchars($shop['first_name'] . " " . $shop['last_name'] ); ?></p>
         </div>
     </div>
 </div>
@@ -94,14 +100,14 @@ if ($result_shop->num_rows > 0) {
 
 <script>
 
-    const sellerId = <?= json_encode($seller_id) ?>; // Get the seller ID from PHP
+    const shopId = <?= json_encode($shop_id) ?>; // Get the seller ID from PHP
 
     // Function for products to be displayed on widgets
   // Function to fetch and display products in widgets
-async function fetchProducts(category = '', sellerId = 0) {
+async function fetchProducts(category = '', shopId  = 0) {
   try {
     // Construct the URL with both category and seller_id as query parameters
-    const url = `get_products_view.php?category=${encodeURIComponent(category)}&seller_id=${encodeURIComponent(sellerId)}`;
+    const url = `get_products_view.php?category=${encodeURIComponent(category)}&shop_id=${encodeURIComponent(shopId)}`;
 
     // Fetch products from the server
     const response = await fetch(url);
@@ -128,9 +134,13 @@ async function fetchProducts(category = '', sellerId = 0) {
       const truncateDesc = truncateText(product.product_desc, 40); // Limit description to 40 characters
       const productWidget = `
         <div class="product-widget">
-          <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
-          </div>
+
+
+        <div class="product-image">
+            <img id="main-product-image" src="<?php echo htmlspecialchars($major_image); ?>" alt="Product Image">
+        </div>
+
+
           <div class="product-info">
             <h3>${product.product_name}</h3>
             <p>${truncateDesc}</p>
@@ -154,7 +164,7 @@ function truncateText(text, maxLength) {
 
 // Fetch products once the page is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-  fetchProducts('', sellerId); // Fetch all products initially (without a category filter)
+  fetchProducts('', shopId); // Fetch all products initially (without a category filter)
 });
 
 </script>

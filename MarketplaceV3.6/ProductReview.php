@@ -246,7 +246,7 @@ $product_id = $_GET['product_id'] ?? 0; // Replace with actual source
 // Fetch product and shop details
 $sql_reviews = "SELECT p.*, s.*
                 FROM tb_products p
-                INNER JOIN shops s ON s.seller_id = p.seller_id
+                INNER JOIN shops s ON s.shop_id = p.shop_id
                 WHERE p.product_id = ?";
 $stmt_reviews = $conn->prepare($sql_reviews);
 $stmt_reviews->bind_param("i", $product_id);
@@ -275,7 +275,7 @@ if ($result_reviews->num_rows > 0) {
             <p class="contact-number">Contact: <?php echo htmlspecialchars($product['contact_number']); ?></p>
         </div>
     </div>
-    <a href="ViewShop.php?seller_id=<?php echo $product['seller_id']; ?>" class="visit-shop-link">Visit Shop</a>
+    <a href="ViewShop.php?shop_id=<?php echo $product['shop_id']; ?>" class="visit-shop-link">Visit Shop</a>
 </div>
 
 

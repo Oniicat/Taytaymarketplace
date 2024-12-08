@@ -7,7 +7,7 @@ try {
 
     // Query to fetch products sorted by price and get the first image for each product
     $sql = "SELECT p.*, 
-                   (SELECT pi.images FROM tb_product_images pi WHERE pi.product_id = p.product_id LIMIT 1) AS images
+            (SELECT pi.images FROM tb_product_images pi WHERE pi.product_id = p.product_id LIMIT 1) AS images
             FROM tb_products p
             ORDER BY p.product_price $order";
 

@@ -35,36 +35,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $insertStmt->close();
 
             // Check if the user has a registration record
+            $sellerId = $user['seller_id'];
+
+        // Query to check the seller ID in the registration table
             $checkRegistrationSql = "SELECT COUNT(*) as count FROM registration WHERE seller_id = ?";
             $checkRegistrationStmt = $conn->prepare($checkRegistrationSql);
             if ($checkRegistrationStmt === false) {
                 echo json_encode(['success' => false, 'message' => 'Failed to check registration status']);
                 exit();
             }
-            $checkRegistrationStmt->bind_param("i", $user['seller_id']);
+            $checkRegistrationStmt->bind_param("i", $sellerId);
             $checkRegistrationStmt->execute();
-            $checkResult = $checkRegistrationStmt->get_result();
+            $registrationResult = $checkRegistrationStmt->get_result();
+            $registrationCount = ($registrationResult && $registrationResult->num_rows > 0) ? $registrationResult->fetch_assoc()['count'] : 0;
 
-            if ($checkResult && $checkResult->num_rows > 0) {
-                $row = $checkResult->fetch_assoc();
-
-                // Set session variables and redirect based on registration count
-                $_SESSION['seller_id'] = $user['seller_id'];
-                $_SESSION['user_email'] = $user['email'];
-
-                if ($row['count'] == 0) {
-                    // No registration found, redirect to the Add Shop page
-                    header("Location: ../registration-process/add-shop.php");
-                    exit();
-                } else {
-                    // Redirect to the seller dashboard
-                    header("Location: ../registration-process/seller-dashboard.php");
-                    exit();
-                }
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Error checking registration']);
+            // Query to check the seller ID in the shops table
+            $checkShopSql = "SELECT COUNT(*) as count FROM shops WHERE seller_id = ?";
+            $checkShopStmt = $conn->prepare($checkShopSql);
+            if ($checkShopStmt === false) {
+                echo json_encode(['success' => false, 'message' => 'Failed to check shop status']);
                 exit();
             }
+            $checkShopStmt->bind_param("i", $sellerId);
+            $checkShopStmt->execute();
+            $shopResult = $checkShopStmt->get_result();
+            $shopCount = ($shopResult && $shopResult->num_rows > 0) ? $shopResult->fetch_assoc()['count'] : 0;
+
+            $_SESSION['seller_id'] = $user['seller_id'];
+            $_SESSION['user_email'] = $user['email'];
+
+            // Check if the seller ID exists in either table
+            if ($registrationCount > 0 || $shopCount > 0) {
+                // Set session variables and redirect to the seller dashboard
+                header("Location: ../registration-process/seller-dashboard.php");
+                exit();
+            } else {
+                // Redirect to the Add Shop page if the seller ID is not found in both tables
+                header("Location: ../registration-process/add-shop.php");
+                exit();
+            }
+
         } else {
             // Invalid password
             $_SESSION['error_message'] = "Invalid password!";

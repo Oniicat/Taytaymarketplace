@@ -7,7 +7,7 @@ $query = "
            si.business_permit_number, si.permit_image, si.shop_profile_pic, si.contact_number, si.shop_description, si.lazada_link, 
            si.shopee_link, si.created_at, s.first_name, s.last_name
     FROM registered_shops si
-    JOIN accounts s ON si.seller_id = s.seller_id
+    JOIN users s ON si.seller_id = s.seller_id
 ";
 
 $sellers = [];

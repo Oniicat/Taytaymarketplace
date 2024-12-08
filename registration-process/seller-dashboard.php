@@ -14,6 +14,7 @@ body {
   background-color: #F4F4F4;
 }
 
+
 /* Dashboard Text */
 .MyDashboard-text {
   text-align: center;
@@ -26,20 +27,34 @@ body {
 
 /* Widgets Container */
 .widgets-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three widgets per row */
-  gap: 20px; /* Spacing between widgets */
+  display: flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  margin: 30px auto; /* Center the grid container */
-  max-width: 800px; /* Optional: Limit the width of the container */
+  margin: 30px auto;
+  overflow-x: auto;
+  padding: 10px;
+  max-width: 100%;
 }
+
+.widget {
+  margin: 0 20px; /* Adds horizontal spacing (half of gap) */
+}
+
+
+@media (min-width: 768px) {
+  .widgets-container {
+    grid-template-columns: repeat(3, 1fr); /* Switch to grid with 3 columns on larger screens */
+  }
+}
+
 
 /* Individual Widget Styles */
 .widget-AddShop {
   background-color: #712798;
   width: 250px;
   height: 150px;
+  margin-right: 20px;
   border-radius: 8px;
   border: 2px solid gray; /* Added white outline */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -67,6 +82,7 @@ body {
 
 /* Individual Widget Styles */
 .widget {
+  margin: 0 10px;
   width: 250px;
   height: 150px;
   border-radius: 8px;
@@ -89,7 +105,7 @@ body {
 
 /* Hover Effect */
 .widget:hover {
-  sbackground-color: #f7f7f7;
+  background-color: #f7f7f7;
   color: #6e38d8;
   border-color: #6e38d8;
   transform: scale(1.05);
@@ -115,7 +131,8 @@ body {
   background-color: #712798;
   transition: background-color 0.3s ease;
   white-space: nowrap;
-  margin-left: 1010px;
+  right: 5%;
+  top: 3%;
   z-index: 10;
 }
 
@@ -159,9 +176,12 @@ body {
         <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
         </a> 
 
-        <a href="../login_module/signin_page.php">
+        <a href="logout.php">
           <button class="logout-btn">Log Out</button>
         </a>
+
+
+
         <!-- Logout Button -->
       
             <div class="profile-container-seller" onclick="toggleUserProfileMenu()">
@@ -185,14 +205,13 @@ body {
     <!-- dapat di pa lalabas dito hanggat di pa na aapprove ni admin -->
 
     <div id="shopContainer">
-      
     <!-- Shops will be dynamically added here -->
     </div>
 
 </div>
 
 <script>
-   document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     const shopContainer = document.getElementById("shopContainer");
 
     // Fetch shops for the logged-in seller
@@ -201,18 +220,45 @@ body {
         .then(data => {
             if (data.success && data.shops.length > 0) {
                 // Loop through shops and create widgets
-                data.shops.forEach(shop => {
-                    const shopLink = document.createElement("a");
-                    shopLink.href = `../MarketplaceV3.6/Seller_Dashboard.php?shop_id=${shop.shop_id}&seller_id=${data.seller_id}`;
-                    shopLink.className = "widget-link";
+              data.shops.forEach(shop => {
+    const shopLink = document.createElement("a");
+    shopLink.href = `../MarketplaceV3.6/Seller_Dashboard.php?shop_id=${shop.shop_id}&seller_id=${data.seller_id}`;
+    shopLink.className = "widget-link";
 
-                    const shopDiv = document.createElement("div");
-                    shopDiv.className = "widget";
-                    shopDiv.textContent = shop.shop_name;
+    const shopDiv = document.createElement("div");
+    shopDiv.className = "widget";
+    shopDiv.textContent = shop.shop_name;
 
-                    shopLink.appendChild(shopDiv);
-                    shopContainer.appendChild(shopLink);
-                });
+    shopLink.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevent default navigation
+
+        // Send the seller_id and shop_id to the session using AJAX
+        fetch("save_session_data.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                shop_id: shop.shop_id,
+                seller_id: data.seller_id
+            }),
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // After successful session save, redirect to the dashboard
+                    window.location.href = shopLink.href;
+                } else {
+                    console.error("Failed to save session data:", result.message);
+                }
+            })
+            .catch(error => console.error("Error saving session data:", error));
+    });
+
+    shopLink.appendChild(shopDiv);
+    shopContainer.appendChild(shopLink);
+});
+
 
                 // Ensure the container is visible
                 shopContainer.style.display = "block";

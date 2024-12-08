@@ -4,7 +4,7 @@ include '../registration-process/conn.php';
 session_start();
 $response = ['success' => false, 'message' => ''];
 
-// taenamo
+
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate required fields
@@ -30,9 +30,9 @@ try {
 
         // Insert into `tb_products`
         $stmt = $conn->prepare("
-           INSERT INTO tb_products 
+            INSERT INTO tb_products 
             (shop_id, product_name, product_desc, product_price, category, date_created) 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
         ");
         $stmt->bind_param("issdss",$shopID, $name, $description, $price, $category, $currentDate)    ;
 

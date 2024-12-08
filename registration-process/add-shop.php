@@ -2,7 +2,18 @@
 include 'conn.php'; // Connect to the database
 session_start(); // Start the session
 
-$seller_id = $_SESSION['seller_id'] ?? null;
+
+// Check if the seller_id is present in the URL query parameters
+// if (isset($_GET['seller_id'])) {
+//     // Store the seller_id in the session
+//     $_SESSION['seller_id'] = $_GET['seller_id'];
+// } else {
+//     // Handle the case where seller_id is not provided
+//     echo "Error: seller_id not provided.";
+//     exit;
+// }
+
+$seller_id = $_SESSION['seller_id'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate `seller_id` from either URL or form data
@@ -20,10 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("i", $seller_id);
     $stmt->execute();
     $stmt->bind_result($first_name, $last_name);
+    
     if (!$stmt->fetch()) {
         echo json_encode(['success' => false, 'message' => 'Seller not found in accounts table.']);
         exit();
     }
+
     $stmt->close();
 
     // Concatenate first_name and last_name to create seller_name
@@ -282,8 +295,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             document.getElementById("notificationPopup").style.display = "none";
             
             // Redirect to the Seller Shop Dashboard
-            window.location.href = "seller-dashboard.php";  // Change this to the correct path if needed
-        }, 6000); // Set to 6 seconds
+            fetch('set_seller_session.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sellerId: sellerId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect after setting the session variable
+                    window.location.href = "seller-dashboard.php";
+                } else {
+                    alert("Failed to set session.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }, 5000); // Set to 6 seconds
     }
 
 

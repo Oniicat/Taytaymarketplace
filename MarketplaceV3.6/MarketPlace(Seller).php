@@ -99,6 +99,50 @@ function getPopularProducts() {
     background-color: #F4F4F4;
     margin: 0;
 }
+
+
+
+ #dropdown-pos {
+      position: absolute;
+      right: 8%;
+    }
+
+
+/* Style the dropdown button */
+.dropdown-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Style the dropdown menu */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+/* Style for links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color on hover */
+.dropdown-content a:hover {
+  background-color: #712798;
+  color: white;
+}
+
 </style>
 
 </head>
@@ -110,13 +154,19 @@ function getPopularProducts() {
         <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
         </a> 
         <!-- Logout Button -->
-        <button class="logout-btn" onclick="window.location.href = '../login_module/signin_page.php';">Log Out</button>
         <a href="Seller_Dashboard.php" class="Switch-btn">Switch to Seller</a>
             <div class="profile-container-seller" onclick="toggleUserProfileMenu()">
                 <a href="UserProfile.php">
                     <img src="Content/RenzPogi.png" alt="User Avatar" class="user-avatar">
                 </a>
             </div>
+
+          <div class="dropdown" id="dropdown-pos">
+          <button class="dropdown-btn" onclick="toggleDropdown()">Account</button>
+          <div id="dropdown-menu" class="dropdown-content">
+            <a href="../registration-process/seller-dashboard.php">Change Shop</a>
+            <a href="logout.php">Logout</a>
+          </div>    
         </div>
     </div>
 </div>
@@ -534,13 +584,13 @@ async function fetchProducts(category = '') {
               <h3>${product.product_name}</h3>
                 <p>${truncatedDesc}</p>
             </div>
-              <div class="product-price">$${parseFloat(product.product_price).toFixed(2)}</div>
+              <div class="product-price">₱${parseFloat(product.product_price).toFixed(2)}</div>
             </div>
           `;
           container.innerHTML += productWidget;
       });
   } catch (error) {
-        onsole.error('Error fetching products:', error);
+        Console.error('Error fetching products:', error);
   }
 }
 
