@@ -1,6 +1,6 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 include 'conn.php';
@@ -49,19 +49,19 @@ try {
         $deleteStmt->execute();
 
         // Send approval email
-        $mail = new PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host = 'smtp.sendgrid.net';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'apikey';
-        $mail->Password = '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';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
+        // $mail = new PHPMailer(true);
+        // $mail->isSMTP();
+        // $mail->Host = 'smtp.sendgrid.net';
+        // $mail->SMTPAuth = true;
+        // // $mail->Username = 'apikey';
+        // // $mail->Password = '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';
+        // $mail->SMTPSecure = 'tls';
+        // $mail->Port = 587;
 
-        $mail->setFrom('lacandiliangelod@gmail.com', 'Admin');
-        $mail->addAddress($seller['email']);
-        $mail->isHTML(true);
-        $mail->Subject = 'Account Approved - Taytay Marketplace';
+        // $mail->setFrom('lacandiliangelod@gmail.com', 'Admin');
+        // $mail->addAddress($seller['email']);
+        // $mail->isHTML(true);
+        // $mail->Subject = 'Account Approved - Taytay Marketplace';
 
         // Customized Email Design
         $mail->Body = '
@@ -149,19 +149,19 @@ try {
         $deleteStmt->execute();
 
         // Send email to the seller notifying them that their account is declined
-        $mail = new PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host = 'smtp.sendgrid.net';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'apikey';
-        $mail->Password = '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';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
+        // $mail = new PHPMailer(true);
+        // $mail->isSMTP();
+        // $mail->Host = 'smtp.sendgrid.net';
+        // $mail->SMTPAuth = true;
+        // // $mail->Username = 'apikey';
+        // // $mail->Password = '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';
+        // $mail->SMTPSecure = 'tls';
+        // $mail->Port = 587;
 
-        $mail->setFrom('lacandiliangelod@gmail.com', 'Admin');
-        $mail->addAddress($seller['email']);
-        $mail->isHTML(true);
-        $mail->Subject = 'Account Declined - Taytay Marketplace';
+        // $mail->setFrom('lacandiliangelod@gmail.com', 'Admin');
+        // $mail->addAddress($seller['email']);
+        // $mail->isHTML(true);
+        // $mail->Subject = 'Account Declined - Taytay Marketplace';
 
         // Customized Email Design with Decline Reason
     $mail->Body = '
@@ -169,7 +169,7 @@ try {
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        // <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body {
                 font-family: Arial, sans-serif;
