@@ -8,9 +8,14 @@ include 'conn.php';
 header('Content-Type: application/json');
 
 
-$data = json_decode(file_get_contents('php://input'), true);
-$seller_id = $data['seller_id'];
-$action = $data['action'];
+// Read the JSON input
+$input = json_decode(file_get_contents("php://input"), true);
+$action = $input['action'] ?? null;
+$seller_id = $input['seller_id'] ?? null;
+$decline_reason = $input['reason'] ?? null;
+$shop_name = $input['shop_name'] ?? null;
+
+
 
 try {
     $stmt = $conn->prepare("SELECT email FROM accounts WHERE seller_id = ?");
@@ -49,7 +54,7 @@ try {
         $mail->Host = 'smtp.sendgrid.net';
         $mail->SMTPAuth = true;
         $mail->Username = 'apikey';
-        $mail->Password = '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';
+        $mail->Password = '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';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
@@ -135,6 +140,9 @@ try {
         echo json_encode(['success' => true, 'message' => 'Account approved and email sent.']);
 
     } elseif ($action === 'decline') {
+
+        $decline_reason = $input['reason'] ?? null;
+
         // Delete the seller's record from the registration table
         $deleteStmt = $conn->prepare("DELETE FROM registration WHERE seller_id = ?");
         $deleteStmt->bind_param("i", $seller_id);
@@ -146,7 +154,7 @@ try {
         $mail->Host = 'smtp.sendgrid.net';
         $mail->SMTPAuth = true;
         $mail->Username = 'apikey';
-        $mail->Password = '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';
+        $mail->Password = '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';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
@@ -155,78 +163,45 @@ try {
         $mail->isHTML(true);
         $mail->Subject = 'Account Declined - Taytay Marketplace';
 
-        // Customized Email Design
-        $mail->Body = '
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Declined</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .email-header img {
-        max-width: 150px;
-        margin-bottom: 10px;
-        }
-        .email-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .email-header h1 {
-            color: #e74c3c;
-            font-size: 24px;
-            margin: 0 0 20px 0;
-            text-align: left;
-        }
-        .email-content {
-            font-size: 16px;
-            color: #555555;
-            line-height: 1.6;
-            text-align: left;
-        }
-        .email-content a {
-            color: #e74c3c;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .footer {
-            margin-top: 20px;
-            text-align: left;
-            font-size: 12px;
-            color: #888888;
-        }
-    </style>
-</head>
-<body>
-    <div class="email-container">
-        <div class="email-header">
-        <div class="email-header">
-            <img src="Admin-approval/logo.png" alt="Taytay Marketplace Logo">
+        // Customized Email Design with Decline Reason
+    $mail->Body = '
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                padding: 20px;
+            }
+            .container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                max-width: 600px;
+                margin: auto;
+            }
+            h1 {
+                color: #d9534f;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
             <h1>Account Declined</h1>
-        </div>
-        <div class="email-content">
             <p>Dear Seller,</p>
-            <p>Your account has been declined. Please resubmit your shop information for further review.</p>
-            <p><a href="http://localhost/Admin-approval/seller-sign-up.php">Click here</a> to resubmit your shop details.</p>
+            <p>We regret to inform you the shop you created has been declined for creation.</p>
+            <p><strong>Reason:</strong> ' . htmlspecialchars($decline_reason) . '</p>
+            <p>If you have any questions, feel free to contact our support team.</p>
+            <p>Thank you,</p>
+            <p>The Taytay Marketplace Team</p>
         </div>
-        <div class="footer">
-            <p>&copy; 2024 Taytay Marketplace. All rights reserved.</p>
-        </div>
-    </div>
-</body>
-</html>';
+    </body>
+    </html>
+    ';
 
         $mail->send();
 

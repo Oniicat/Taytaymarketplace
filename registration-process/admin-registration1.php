@@ -97,6 +97,12 @@ if ($result = $conn->query($query)) {
     <p><strong>Permit Image:</strong> <a id="modal-permit-image" href="" target="_blank">View Image</a></p>
     <p><strong>Shop Profile Image:</strong> <a id="modal-profile-image" href="" target="_blank">View Image</a></p>
 
+    <!-- Textarea for decline reason -->
+  <div id="decline-reason" style="display: none;">
+    <label for="reason">Reason for Declining:</label>
+    <textarea id="reason" name="reason" rows="4" cols="50" placeholder="Enter your reason here..."></textarea>
+  </div>
+
     <form id="action-form">
         <input type="hidden" id="modal-id">
         <button type="button" id="approve-btn">Approve</button>
@@ -160,9 +166,8 @@ closeModalBtn.addEventListener('click', () => {
             overlay.style.display = 'none';
         });
 
-//------------------------------------------------------------------------------------------------
+//-----------------------FOR APPROVE AND DECLINE BUTTON----------------------------------------------------------
         
-//FOR APPROVE AND DECLINE BUTTON
 
 document.getElementById('approve-btn').addEventListener('click', () => {
     const sellerId = modalId.value;
@@ -192,32 +197,58 @@ document.getElementById('approve-btn').addEventListener('click', () => {
     });
 });
 
-document.getElementById('decline-btn').addEventListener('click', () => {
+document.getElementById("decline-btn").addEventListener("click", () => {
+    const declineReasonContainer = document.getElementById("decline-reason");
+    const reason = document.getElementById("reason").value.trim();
     const sellerId = modalId.value;
 
-    fetch('send-activation-email.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ seller_id: sellerId, action: 'decline' })
+    // Ensure the textarea is visible
+    declineReasonContainer.style.display = "block";
+
+    if (!reason) {
+        alert("Please provide a reason for declining the seller.");
+        return;
+    }
+
+    fetch("send-activation-email.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            action: "decline",
+            seller_id: sellerId,
+            reason: reason,
+        }),
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Seller declined successfully!');
-            // Remove the seller's row from the table
-            const row = document.getElementById(`row-${sellerId}`);
-            if (row) row.remove();
-        } else {
-            alert('Error declining seller: ' + data.message);
-        }
-        // Close the modal
-        modal.style.display = 'none';
-        overlay.style.display = 'none';
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while declining the seller.');
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                alert(data.message);
+                const row = document.getElementById(`row-${sellerId}`);
+                if (row) row.remove();
+            } else {
+                alert("Error: " + data.message);
+            }
+
+            // Close modal after action
+            modal.style.display = "none";
+            overlay.style.display = "none";
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while declining the seller.");
+        });
+});
+
+
+
+document.getElementById("decline-btn").addEventListener("click", function () {
+  const declineReason = document.getElementById("decline-reason");
+  declineReason.style.display = "block"; // Show the textarea for reason
+});
+
+document.getElementById("approve-btn").addEventListener("click", function () {
+  // Handle the approval action here
+  alert("Shop approved!");
 });
 
 
