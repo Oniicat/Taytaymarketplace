@@ -13,7 +13,7 @@ $seller_id = $data['seller_id'];
 $action = $data['action'];
 
 try {
-    $stmt = $conn->prepare("SELECT email FROM users WHERE seller_id = ?");
+    $stmt = $conn->prepare("SELECT email FROM accounts WHERE seller_id = ?");
     $stmt->bind_param("i", $seller_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -25,17 +25,16 @@ try {
     }
 
     if ($action === 'approve') {
-        // Approve the seller's account
-        $stmt = $conn->prepare("UPDATE registration SET status = 'approved' WHERE seller_id = ?");
-        $stmt->bind_param("i", $seller_id);
-        $stmt->execute();
-
+        
         // Insert the seller's data into the shops table
-        $shopStmt = $conn->prepare("
-        INSERT INTO shops (seller_id, first_name, middle_name, last_name, contact_number, municipality, baranggay, shop_name, stall_number, business_permit_number, permit_image, created_at)
-        SELECT seller_id, first_name, middle_name, last_name, contact_number, municipality, baranggay, shop_name, stall_number, business_permit_number, permit_image, NOW()
+        $shopStmt = $conn->prepare("INSERT INTO registered_shops (seller_id, shop_name, stall_number, 
+           business_permit_number, permit_image, shop_profile_pic, contact_number, shop_description, lazada_link, 
+           shopee_link, created_at)
+        SELECT seller_id, shop_name, stall_number, business_permit_number, permit_image, 
+               shop_profile_pic, contact_number, shop_description, lazada_link, shopee_link, NOW()
         FROM registration
-        WHERE seller_id = ?");
+        WHERE seller_id = ?;
+");
         $shopStmt->bind_param("i", $seller_id);
         $shopStmt->execute();
 
@@ -50,7 +49,7 @@ try {
         $mail->Host = 'smtp.sendgrid.net';
         $mail->SMTPAuth = true;
         $mail->Username = 'apikey';
-        $mail->Password = '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';
+        $mail->Password = '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';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
@@ -147,7 +146,7 @@ try {
         $mail->Host = 'smtp.sendgrid.net';
         $mail->SMTPAuth = true;
         $mail->Username = 'apikey';
-        $mail->Password = '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';
+        $mail->Password = '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';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
