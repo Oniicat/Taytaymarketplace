@@ -103,15 +103,17 @@ foreach ($content_keys as $content_key) {
         </div>
 
         <div class="form-container">
+
             <!-- Left Side -->
             <div class="left-side">
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <div class="email-container">
-                        <input type="email" id="signup-email" name="email" required>
-                        <span class="email-icon">
-                            <i class="fas fa-envelope"></i>
+               
+                  <!-- UserName -->
+                  <div class="form-group">
+                    <label for="first-name">Username</label>
+                    <div class="input-container">
+                        <input type="text" id="user_name" name="user_name" required>
+                        <span class="input-icon">
+                            <i class="fas fa-user"></i>
                         </span>
                     </div>
                 </div>
@@ -127,6 +129,7 @@ foreach ($content_keys as $content_key) {
                     </div>
                 </div>
 
+
                 <!-- Middle Name -->
                 <div class="form-group">
                     <label for="middle-name">Middle Name</label>
@@ -137,10 +140,6 @@ foreach ($content_keys as $content_key) {
                         </span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Right Side -->
-            <div class="right-side">
                 <!-- Last Name -->
                 <div class="form-group">
                     <label for="last-name">Last Name</label>
@@ -151,7 +150,23 @@ foreach ($content_keys as $content_key) {
                         </span>
                     </div>
                 </div>
+            </div>
+            
 
+
+            <!-- Right Side -->
+            <div class="right-side">
+                 <!-- Email -->
+                 <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <div class="email-container">
+                        <input type="email" id="signup-email" name="email" required>
+                        <span class="email-icon">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+                
                 <!-- Password -->
                 <div class="form-group">
                     <label for="signup-password">Password</label>

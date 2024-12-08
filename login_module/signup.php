@@ -7,6 +7,7 @@ include "../registration-process/conn.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST['email']);
+    $user_name = trim($_POST['user_name']);
     $first_name =  $_POST['first_name'];
     $middle_name =  $_POST['middle_name'];
     $last_name =  $_POST['last_name'];
