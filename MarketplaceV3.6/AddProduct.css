@@ -263,7 +263,7 @@ input, textarea {
 .category-list {
     display: none; 
     position: absolute; 
-    top: 57%; 
+    top: 55%; 
     left: 40;
     width: 80%;  
     background-color: white;
@@ -275,6 +275,7 @@ input, textarea {
 
 /* Show the category list when toggled */
 .category-list.show {
+    top: auto;
     display: block;
 }
 
