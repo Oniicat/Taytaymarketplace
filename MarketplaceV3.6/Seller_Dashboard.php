@@ -1,4 +1,12 @@
 <?php
+
+// Start the session
+session_start();
+
+// Save the shop_id to session
+$_SESSION['shop_id'] = $_GET['shop_id'];  // Assuming the shop_id is passed via the URL
+
+
 //map location 
 $latitude = 14.557675; 
 $longitude = 121.132690; 

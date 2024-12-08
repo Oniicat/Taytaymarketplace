@@ -1,6 +1,8 @@
 <?php
 include 'conn.php'; // Connect to the database
+session_start(); // Start the session
 
+$seller_id = $_SESSION['seller_id'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate `seller_id` from either URL or form data
@@ -225,6 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
     const form = document.getElementById("sellerForm");
     const submitButton = document.querySelector(".submit-button");
+    const sellerId = <?php echo json_encode($seller_id); ?>;
 
     form.addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent the default form submission
@@ -234,14 +237,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         const formData = new FormData(form);
 
+        if (sellerId) {
+        formData.append('seller_id', sellerId);
+    }
+
         // Log the seller_id and URL being used
-        console.log("Submitting with seller_id: " + formData.get('seller_id'));
+        console.log("Submitting with seller_id from session:", sellerId);
         console.log("Form URL: ?seller_id=" + formData.get('seller_id'));
 
         // Perform the form submission via fetch
-        fetch("?seller_id=" + formData.get('seller_id'), {  
-            method: "POST",
-            body: formData
+        fetch("?seller_id=" + sellerId, {
+        method: "POST",
+        body: formData
         })
         .then(response => response.json())
         .then(data => {

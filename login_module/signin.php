@@ -34,13 +34,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $insertStmt->execute();
             $insertStmt->close();
 
-            // Set session variables
-            $_SESSION['seller_id'] = $user['seller_id'];
-            $_SESSION['user_email'] = $user['email'];
+            // Check if the user has a registration record
+            $checkRegistrationSql = "SELECT COUNT(*) as count FROM registration WHERE seller_id = ?";
+            $checkRegistrationStmt = $conn->prepare($checkRegistrationSql);
+            if ($checkRegistrationStmt === false) {
+                echo json_encode(['success' => false, 'message' => 'Failed to check registration status']);
+                exit();
+            }
+            $checkRegistrationStmt->bind_param("i", $user['seller_id']);
+            $checkRegistrationStmt->execute();
+            $checkResult = $checkRegistrationStmt->get_result();
 
-            // Redirect to the seller's marketplace
-            header("Location: ../MarketplaceV3.6/MarketPlace(Seller).php");
-            exit();
+            if ($checkResult && $checkResult->num_rows > 0) {
+                $row = $checkResult->fetch_assoc();
+
+                // Set session variables and redirect based on registration count
+                $_SESSION['seller_id'] = $user['seller_id'];
+                $_SESSION['user_email'] = $user['email'];
+
+                if ($row['count'] == 0) {
+                    // No registration found, redirect to the Add Shop page
+                    header("Location: ../registration-process/add-shop.php");
+                    exit();
+                } else {
+                    // Redirect to the seller dashboard
+                    header("Location: ../registration-process/seller-dashboard.php");
+                    exit();
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error checking registration']);
+                exit();
+            }
         } else {
             // Invalid password
             $_SESSION['error_message'] = "Invalid password!";
@@ -53,7 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header('Location: signin_page.php');
         exit();
     }
+} else {
+    // Handle case when the request method is not POST
+    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+    exit();
 }
 
-
+// Close the connection at the end of the script
+$conn->close();
 ?>

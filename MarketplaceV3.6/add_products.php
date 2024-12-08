@@ -21,6 +21,7 @@ try {
         $linkname = $_POST['linkname'] ?? []; // Array of links
 
         $sellerID = $_SESSION['seller_id'];
+        $shopID = $_SESSION['shop_id'];
         
 
         // Get current date and time
@@ -30,10 +31,10 @@ try {
         // Insert into `tb_products`
         $stmt = $conn->prepare("
            INSERT INTO tb_products 
-            (product_name, product_desc, product_price, category, date_created) 
+            (shop_id, product_name, product_desc, product_price, category, date_created) 
             VALUES (?, ?, ?, ?, ?)
         ");
-        $stmt->bind_param("ssdss", $name, $description, $price, $category, $currentDate)    ;
+        $stmt->bind_param("issdss",$shopID, $name, $description, $price, $category, $currentDate)    ;
 
         if (!$stmt->execute()) {
             throw new Exception('Failed to insert product: ' . $stmt->error);

@@ -158,8 +158,12 @@ body {
         <a href="MarketPlace(Seller).php">
         <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
         </a> 
+
+        <a href="../login_module/signin_page.php">
+          <button class="logout-btn">Log Out</button>
+        </a>
         <!-- Logout Button -->
-        <button class="logout-btn">Log Out</button>
+      
             <div class="profile-container-seller" onclick="toggleUserProfileMenu()">
                 <a href="UserProfile.php">
                     <img src="Content/RenzPogi.png" alt="User Avatar" class="user-avatar">
@@ -177,19 +181,56 @@ body {
     <a href="add-shop.php" class="widget-link">
         <div class="widget-AddShop">Add Shop</div>
     </a>
-    <a href="Seller Dashboard.php" class="widget-link">
-        <div class="widget">Shap ni RenzPogi</div>
-    </a>
-    <a href="shop3.html" class="widget-link">
-        <div class="widget">Shop 3</div>
-    </a>
-    <a href="shop4.html" class="widget-link">
-        <div class="widget">Shop 4</div>
-    </a>
-    <a href="shop5.html" class="widget-link">
-        <div class="widget">Shop 5</div>
-    </a>
+
+    <!-- dapat di pa lalabas dito hanggat di pa na aapprove ni admin -->
+
+    <div id="shopContainer">
+      
+    <!-- Shops will be dynamically added here -->
+    </div>
+
 </div>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const shopContainer = document.getElementById("shopContainer");
+
+    // Fetch shops for the logged-in seller
+    fetch("get_shops.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.shops.length > 0) {
+                // Loop through shops and create widgets
+                data.shops.forEach(shop => {
+                    const shopLink = document.createElement("a");
+                    shopLink.href = `../MarketplaceV3.6/Seller_Dashboard.php?shop_id=${shop.shop_id}&seller_id=${data.seller_id}`;
+                    shopLink.className = "widget-link";
+
+                    const shopDiv = document.createElement("div");
+                    shopDiv.className = "widget";
+                    shopDiv.textContent = shop.shop_name;
+
+                    shopLink.appendChild(shopDiv);
+                    shopContainer.appendChild(shopLink);
+                });
+
+                // Ensure the container is visible
+                shopContainer.style.display = "block";
+            } else {
+                console.error("No shops found for this seller:", data.message);
+                shopContainer.style.display = "none"; // Hide the container if no shops
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching shops:", error);
+            shopContainer.innerHTML = "<p>An error occurred while loading shops.</p>";
+            shopContainer.style.display = "none"; // Hide the container on error
+        });
+});
+
+
+
+</script>
 
 </body>
 </html>
