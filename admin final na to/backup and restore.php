@@ -242,7 +242,7 @@ table tr:hover {
 </div>
 
 <div class="archive_accounts">
-    <h1>Archive Users</h1>
+    <h1>Users Archive</h1>
     <table class="table table-bordered">
         <thead>
             <tr>
