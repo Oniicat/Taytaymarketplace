@@ -32,6 +32,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
         // Success message
         $_SESSION['message_type'] = 'success';
         $_SESSION['message'] = 'Content updated successfully!';
+
+
+//activity log ni josh mojica(nakikita ka nya, dapat masipag ka)
+$activityType = "Changed Terms and Condition, Data Privacy";
+$userName = "Admin"; // Default user name
+
+$conn->begin_transaction();
+try {
+    $insert_sql = "INSERT INTO activity_log (user_name, activity_type, date_time) VALUES (?, ?, NOW())";
+    $insert_stmt = $conn->prepare($insert_sql);
+    $insert_stmt->bind_param("ss", $userName, $activityType);
+
+    if (!$insert_stmt->execute()) {
+        throw new Exception("Activity log insertion failed: " . $insert_stmt->error);
+    }
+
+    $insert_stmt->close();
+    $conn->commit();
+} catch (Exception $e) {
+    $conn->rollback();
+    error_log($e->getMessage());
+}
+
+
+
     } else {
         // Error message
         $_SESSION['message_type'] = 'error';
@@ -41,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     $update_stmt->close();
 
     // Reload the page to reflect changes
-    header("Location: " . $_SERVER['PHP_SELF']);
+    header('Location: main.php?page=legaladmin');
     exit();
 }
 $conn->close();

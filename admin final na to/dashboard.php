@@ -154,9 +154,9 @@
      
     <!-- Products Card -->
     <div class="card">
-      <h3>New Registration</h3>
+      <h3>Registration</h3>
       <p id="products-count">
-      <?= getCountThisMonth('users');?>
+      <?= getCountThisMonth('registration');?>
       </p>
     </div>
   </div>
@@ -236,7 +236,7 @@ $con->close();
 $sql = "
    SELECT 
     p.product_id, 
-    p.seller_id, 
+    p.shop_id, 
     p.product_name, 
     p.category, 
     IFNULL(pc.click_count, 0) AS click_count
@@ -273,7 +273,7 @@ $result = $conn->query($sql);
             <thead>
                 <tr>
                     <th>Product ID</th>
-                    <th>Seller ID</th>
+                    <th>Shop ID</th>
                     <th>Product Name</th>
                     <th>Category</th>
                     <th>Views</th>
@@ -286,7 +286,7 @@ $result = $conn->query($sql);
                     while($row = $result->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>" . $row['product_id'] . "</td>";
-                        echo "<td>" . $row['seller_id'] . "</td>";
+                        echo "<td>" . $row['shop_id'] . "</td>";
                         echo "<td>" . $row['product_name'] . "</td>";
                         echo "<td>" . $row['category'] . "</td>";
                         echo "<td>" . $row['click_count'] . "</td>";

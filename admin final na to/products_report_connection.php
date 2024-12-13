@@ -12,9 +12,10 @@ if($con->connect_error){
 
 $category_filter = isset($_POST['category']) ? $_POST['category'] : '';
 
-$data_fetch = "SELECT p.product_id as '#' , p.product_name as product, p.category, si.shop_name as shop, concat(si.first_name, ' ', si.last_name) as seller, pc.click_count, p.date_created as date_posted
+$data_fetch = "SELECT p.product_id as '#' , p.product_name as product, p.category, s.shop_name as shop, concat(u.first_name, ' ', u.last_name) as seller, pc.click_count, p.date_created as date_posted
                 from tb_products p
-                left join shops si ON p.seller_id = si.seller_id
+                left join shops s ON s.shop_id = p.shop_id
+                left join users u ON u.seller_id = s.seller_id
                 left join tb_product_clicks pc on pc.product_id = p.product_id";
 
 if ($category_filter !== "") {

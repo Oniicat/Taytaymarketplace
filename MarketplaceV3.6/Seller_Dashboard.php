@@ -1,4 +1,12 @@
 <?php
+
+// Start the session
+session_start();
+
+// Save the shop_id to session
+$shop_ID = $_SESSION['shop_id']; // Assuming the shop_id is passed via the URL
+
+
 //map location 
 $latitude = 14.557675; 
 $longitude = 121.132690; 
@@ -92,24 +100,81 @@ function getPopularProducts() {
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <title>Seller Dashboard</title>
+  <title>Seller Dashboard ng mamamo</title>
+
+  <style>
+        /* Style the dropdown container */
+    /* .dropdown{
+      position: absolute;
+      display: inline-block;
+      right: 8%;
+    } */
+
+    #dropdown-pos {
+      position: absolute;
+      right: 8%;
+    }
+
+    /* Style the dropdown button */
+    .dropdown-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* Style the dropdown menu */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+        transition: background-color 0.15s, color 0.15s;
+    }
+
+    /* Style for links inside the dropdown */
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+
+    }
+
+    /* Change color on hover */
+    .dropdown-content a:hover {
+      background-color: #712798;
+      color: white;
+    }
+
+  </style>
 </head>
 <body>
 <!-- Navbar -->
 <div class="custom-navbar">
     <div class="navbar-center">
         <a href="MarketPlace(Seller).php">
-        <img src="Content/New Logo.png" alt="Logo" class="navbar-logo">
+        <img src="<?php echo (file_exists('logo_path.txt') && trim(file_get_contents('logo_path.txt'))) ? file_get_contents('logo_path.txt') : 'logo.png'; ?>" alt="Logo" class="navbar-logo">
         </a> 
-        <!-- Logout Button -->
-        <button class="logout-btn" onclick="window.location.href = '../login_module/signin_page.php';">Log Out</button>
-        </script>
+
+        
         <a href="MarketPlace(Seller).php" class="Switch-btn">Switch to Market Place</a>
             <div class="profile-container-seller" onclick="toggleUserProfileMenu()">
                 <a href="UserProfile.php">
                     <img src="Content/RenzPogi.png" alt="User Avatar" class="user-avatar">
                 </a>
             </div>
+        <!-- Logout Button -->
+        <div class="dropdown" id="dropdown-pos">
+          <button class="dropdown-btn" onclick="toggleDropdown()">Account</button>
+          <div id="dropdown-menu" class="dropdown-content">
+            <a href="../registration-process/seller-dashboard.php">Change Shop</a>
+            <a href="logout.php">Logout</a>
+          </div>
         </div>
     </div>
 </div>
@@ -233,6 +298,30 @@ function getPopularProducts() {
 <script>
 
 //-----------------------------------------------Filter by Category-------------------------------------
+// Function to toggle the dropdown menu visibility
+function toggleDropdown() {
+  const dropdownMenu = document.getElementById('dropdown-menu');
+  // Toggle the display property
+  if (dropdownMenu.style.display === 'block') {
+    dropdownMenu.style.display = 'none';
+  } else {
+    dropdownMenu.style.display = 'block';
+  }
+}
+
+// Close the dropdown menu if the user clicks anywhere outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropdown-btn')) {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    if (dropdownMenu.style.display === 'block') {
+      dropdownMenu.style.display = 'none';
+    }
+  }
+}
+
+
+
+
 
 function filterByCategory(category) {
   // Hide all product sections
@@ -300,7 +389,7 @@ function filterByCategory(category) {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -364,7 +453,7 @@ async function handleLatest() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -439,7 +528,7 @@ document.querySelector('.Latest-button').addEventListener('click', function () {
         const productWidget = `
           <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
             <div class="product-image">
-              <img src="${product.product_image}" alt="Product Image">
+              <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
             </div>
             <div class="product-info">
               <h3>${product.product_name}</h3>
@@ -504,7 +593,7 @@ async function fetchAllPopularProducts() {
       const productWidget = `
         <div class="product-widget" onclick="redirectToProductReview(${product.product_id})">
           <div class="product-image">
-            <img src="${product.product_image}" alt="Product Image">
+            <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
           </div>
           <div class="product-info">
             <h3>${product.product_name}</h3>
@@ -541,7 +630,7 @@ document.querySelector('.popular-button').addEventListener('click', function () 
 });
 
 
-// Function for products to be displayed on widgets
+//------------------------------Function for products to be displayed on widgets--------------------
 async function fetchProducts(category = '') { 
   try {
       // Fetch products from the server, passing the selected category (empty by default)
@@ -559,14 +648,14 @@ async function fetchProducts(category = '') {
           <div class="product-widget" onclick="redirectToEditProduct(${product.product_id})">
             
               <div class="product-image">
-                <img src="${product.product_image}" alt="Product Image">
+                <img src="${product.images|| 'default-image.jpg'}" alt="Product Image">
               </div>
 
             <div class="product-info">
               <h3>${product.product_name}</h3>
                 <p>${truncateDesc}</p>
             </div>
-              <div class="product-price">$${parseFloat(product.product_price).toFixed(2)}</div>
+              <div class="product-price">₱${parseFloat(product.product_price).toFixed(2)}</div>
             </div>
           `;
           container.innerHTML += productWidget;

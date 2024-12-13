@@ -98,6 +98,33 @@ if (isset($_GET['product_id'])) {
         exit;
     }
 
+    // Fetch the major image
+    $sql_major_image = "SELECT images FROM tb_product_images WHERE product_id = ? LIMIT 1";
+    $stmt_major_image = $conn->prepare($sql_major_image);
+    $stmt_major_image->bind_param("i", $product_id);
+    $stmt_major_image->execute();
+    $result_major_image = $stmt_major_image->get_result();
+    
+    $major_image = null;
+    if ($result_major_image->num_rows > 0) {
+        $image_row = $result_major_image->fetch_assoc();
+        $major_image = $image_row['images'];
+    }
+    
+    // Fetch the remaining images
+    $sql_remaining_images = "SELECT images FROM tb_product_images WHERE product_id = ? AND images != ?";
+    $stmt_remaining_images = $conn->prepare($sql_remaining_images);
+    $stmt_remaining_images->bind_param("is", $product_id, $major_image);
+    $stmt_remaining_images->execute();
+    $result_remaining_images = $stmt_remaining_images->get_result();
+    
+    $remaining_images = [];
+    if ($result_remaining_images->num_rows > 0) {
+        while ($image_row = $result_remaining_images->fetch_assoc()) {
+            $remaining_images[] = $image_row['images'];
+        }
+    }
+
     // Fetch product links
     $sql_links = "SELECT link_name, links FROM tb_product_links WHERE product_id = ?";
     $stmt_links = $conn->prepare($sql_links);
@@ -159,10 +186,28 @@ if (isset($_GET['product_id'])) {
     <div class="content-container">
         <!-- Content Container -->
 <div class="content-container">
+<!-- Image Carousel -->
+ <div class="image-carousel">
+
+    <!-- Dynamically loop through remaining images -->
+    <?php if (!empty($remaining_images)): ?>
+    <?php 
+        // Limit to 3 images
+        $limited_images = array_slice($remaining_images, 0, 5); 
+    ?>
+    <?php foreach ($limited_images as $image): ?>
+        <img src="<?php echo htmlspecialchars($image); ?>" alt="Product Image" class="carousel-image" onclick="changeMainImage(this)">
+    <?php endforeach; ?>
+<?php else: ?>
+    <p>No additional images available.</p>
+<?php endif; ?>
+
+</div>
+
     <!-- Product Image Container -->
     <div class="product-image-container">
         <div class="product-image">
-            <img id="main-product-image" src="<?php echo htmlspecialchars($product['product_image']); ?>" alt="Product Image">
+            <img id="main-product-image" src="<?php echo htmlspecialchars($major_image); ?>" alt="Product Image">
         </div>
     </div>
     <!-- Product Details -->
@@ -201,7 +246,7 @@ $product_id = $_GET['product_id'] ?? 0; // Replace with actual source
 // Fetch product and shop details
 $sql_reviews = "SELECT p.*, s.*
                 FROM tb_products p
-                INNER JOIN shops s ON s.seller_id = p.seller_id
+                INNER JOIN shops s ON s.shop_id = p.shop_id
                 WHERE p.product_id = ?";
 $stmt_reviews = $conn->prepare($sql_reviews);
 $stmt_reviews->bind_param("i", $product_id);
@@ -230,7 +275,7 @@ if ($result_reviews->num_rows > 0) {
             <p class="contact-number">Contact: <?php echo htmlspecialchars($product['contact_number']); ?></p>
         </div>
     </div>
-    <a href="ViewShop.php?seller_id=<?php echo $product['seller_id']; ?>" class="visit-shop-link">Visit Shop</a>
+    <a href="ViewShop.php?shop_id=<?php echo $product['shop_id']; ?>" class="visit-shop-link">Visit Shop</a>
 </div>
 
 

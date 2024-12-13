@@ -43,7 +43,7 @@ $sectionLabel = isset($_GET['section']) ? htmlspecialchars($_GET['section']) : '
 ?>
 
   <!-- My Products Text -->
-  <div class="Marketplace-text">Market Place - <?php echo $sectionLabel; ?></div>
+  <div class="Marketplace-text">Marketplace - <?php echo $sectionLabel; ?></div>
 
   <!-- Unified Container for Search and other buttons -->
   <div class="Search&Button-container">

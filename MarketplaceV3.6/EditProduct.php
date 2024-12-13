@@ -4,6 +4,7 @@ include '../registration-process/conn.php';
 if (isset($_GET['product_id'])) { // Display product based on product ID
     $product_id = intval($_GET['product_id']); 
 
+    
     // Fetch product details
     $sql = "SELECT * FROM tb_products WHERE product_id = ?";
     $stmt = $conn->prepare($sql);
@@ -16,6 +17,33 @@ if (isset($_GET['product_id'])) { // Display product based on product ID
     } else {
         echo "Product not found.";
         exit;
+    }
+
+    // Fetch the major image
+    $sql_major_image = "SELECT images FROM tb_product_images WHERE product_id = ? LIMIT 1";
+    $stmt_major_image = $conn->prepare($sql_major_image);
+    $stmt_major_image->bind_param("i", $product_id);
+    $stmt_major_image->execute();
+    $result_major_image = $stmt_major_image->get_result();
+    
+    $major_image = null;
+    if ($result_major_image->num_rows > 0) {
+        $image_row = $result_major_image->fetch_assoc();
+        $major_image = $image_row['images'];
+    }
+    
+    // Fetch the remaining images
+    $sql_remaining_images = "SELECT images FROM tb_product_images WHERE product_id = ? AND images != ?";
+    $stmt_remaining_images = $conn->prepare($sql_remaining_images);
+    $stmt_remaining_images->bind_param("is", $product_id, $major_image);
+    $stmt_remaining_images->execute();
+    $result_remaining_images = $stmt_remaining_images->get_result();
+    
+    $remaining_images = [];
+    if ($result_remaining_images->num_rows > 0) {
+        while ($image_row = $result_remaining_images->fetch_assoc()) {
+            $remaining_images[] = $image_row['images'];
+        }
     }
 
     // Fetch product links
@@ -60,6 +88,92 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="EditProduct.css">
     <title>Edit Product</title>
+    <style>
+        .image-upload-container {
+            margin-bottom: 20px;
+        }
+
+        .image-upload-container label {
+            font-weight: bold;
+        }
+
+        .image-preview-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        .image-preview-container img {
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-image {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 5px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+        #multiple-images-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 200px; /* Set a max height */
+            overflow-y: auto; /* Make it scrollable if it exceeds the height */
+        }
+
+        .image-item {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+.image-preview {
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.image-item:hover .delete-option {
+    display: block;
+}
+
+.delete-option {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(255, 0, 0, 0.8);
+    padding: 5px;
+    display: none; /* Hidden by default */
+    border-radius: 4px;
+}
+
+.delete-button {
+    background: none;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+
+    </style>
 </head>
 <body>
 <!-- Navbar -->
@@ -83,7 +197,11 @@ if ($result->num_rows > 0) {
 
         <!-- Product Image Preview -->
         <div class="product-image-container" onclick="triggerFileInput()">
-            <img id="product-image" src="<?php echo htmlspecialchars($product['product_image']); ?>" alt="Product Preview" class="product-image">
+        <?php if ($major_image): ?>
+                <img id="product-image" src="<?php echo htmlspecialchars($major_image); ?>" alt="Product Preview" class="product-image">
+            <?php else: ?>
+                <img id="product-image" src="path/to/default-image.jpg" alt="Product Preview" class="product-image"> <!-- Use a default image if no major image is found -->
+            <?php endif; ?>
             <input type="file" id="image-input" style="display: none;" accept="image/*" onchange="previewImage(event)">
         </div>
 
@@ -123,6 +241,30 @@ if ($result->num_rows > 0) {
         </div>
         <!-- Newly Added Link -->
 
+         <!-- Multiple Images Upload -->
+         <div class="image-upload-container">
+            <label for="multiple-images">Upload Additional Images</label>
+            <input type="file" id="multiple-images" multiple accept="image/*" onchange="previewMultipleImages(event)">
+        </div>
+
+        <!-- Display Multiple Images -->
+        <div id="multiple-images-preview" class="image-preview-container">
+             <!-- Loop through the remaining images and generate image elements -->
+            <?php if (!empty($remaining_images)): ?>
+                <?php foreach ($remaining_images as $image): ?>
+                    <div class="image-item" data-image-path="<?php echo htmlspecialchars($image); ?>">
+                        <img src="<?php echo htmlspecialchars($image); ?>" alt="Product Image" class="image-preview">
+                        <div class="delete-option"> 
+                            <input type="hidden" name="image_path" value="<?php echo htmlspecialchars($image); ?>">
+                            <button class="delete-button" onclick="deleteImage(this)">Delete</button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No additional images available.</p>
+            <?php endif; ?>
+
+        </div>
         
         <!-- Delete Links Button -->
         <button class="delete-links-btn" onclick="deleteAllLinks()">Delete All Links</button>
@@ -173,6 +315,18 @@ if ($result->num_rows > 0) {
     linkTitles.forEach((title, index) => {
     formData.append(`linkname[${index}]`, title); // Use the title text
     });
+
+    // Handle major image upload
+    const majorImage = document.querySelector('#image-input').files[0];
+    if (majorImage) {
+        formData.append('major_image', majorImage);
+    }
+
+     // Handle multiple image uploads
+     const multipleImages = document.querySelector('#multiple-images').files;
+    for (let i = 0; i < multipleImages.length; i++) {
+        formData.append('multiple_images[]', multipleImages[i]);
+    }
 
     // You can use AJAX to send the form data to the server for saving
     fetch('update_products.php', { //calling out update function php
@@ -229,6 +383,51 @@ function deleteProduct(productId) {
             alert('An error occurred while deleting the product.');
         });
 }
+
+// Handle major image upload and preview
+function triggerMajorImageInput() {
+    document.getElementById('image-input').click();
+}
+
+function previewMajorImage(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        const output = document.getElementById('product-image');
+        output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+// Handle multiple images upload and preview
+function previewMultipleImages(event) {
+    const files = event.target.files;
+    const previewContainer = document.getElementById('multiple-images-preview');
+    previewContainer.innerHTML = ''; // Clear previous images
+
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const imgElement = document.createElement('img');
+            imgElement.src = reader.result;
+            imgElement.classList.add('image-preview');
+            
+            // Add remove button to each image
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'X';
+            removeBtn.classList.add('remove-image');
+            removeBtn.onclick = function() {
+                imgElement.remove();
+                removeBtn.remove();
+            };
+
+            // Append the image and remove button to the container
+            previewContainer.appendChild(imgElement);
+            previewContainer.appendChild(removeBtn);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
 /**
  * Open the modal popup for adding an external link.
  */
@@ -345,6 +544,50 @@ function previewImage(event) {
         output.src = reader.result;
     };
     reader.readAsDataURL(event.target.files[0]);
+}
+
+function deleteImage(buttonElement) {
+    // Get the parent container of the image item
+    const imageItem = buttonElement.closest('.image-item');
+    
+    // Get the image path from the data attribute (ensure it's being read properly)
+    const imagePath = imageItem.dataset.imagePath; 
+
+    // Check if imagePath exists
+    if (!imagePath) {
+        alert('Image path not found.');
+        return;
+    }
+
+    // Confirm deletion
+    const confirmation = confirm('Are you sure you want to remove this image?');
+    if (!confirmation) {
+        return;
+    }
+
+    // Send AJAX request to delete the image from the database
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "delete_image.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    // Send the image path to delete
+    xhr.send("image_path=" + encodeURIComponent(imagePath));
+
+    // Handle the server response
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText); // Parse the JSON response
+            if (response.success) {
+                // Remove the image item from the DOM
+                imageItem.remove();
+                alert('Image removed successfully.');
+            } else {
+                alert('Failed to delete the image from the database: ' + response.error);
+            }
+        } else {
+            alert('Error deleting the image.');
+        }
+    };
 }
 
 </script>
