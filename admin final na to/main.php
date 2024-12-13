@@ -38,7 +38,8 @@
                     Settings <span class="arrow"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="main.php?page=category">Add Category</a></li>
+                    <li><a href="main.php?page=category">Category</a></li>
+                    <li><a href="main.php?page=org">Organization</a></li>
                     <li><a href="main.php?page=change_logo">Change Logo</a></li>
                     <li><a href="main.php?page=legaladmin">Legal Documents</a></li>
                     <li><a href="main.php?page=websitetextadmin">Website</a></li>
@@ -51,7 +52,7 @@
     <div class="main-content">
         <?php
         $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
-        $allowed_pages = ['change_logo','accounts', 'dashboard', 'admin-registered-shops', 'products_report', 'settings', 'users_report', 'products', 'activity_log', 'users', 'category', 'websitetextadmin', 'legaladmin', 'archive', 'backup and restore', 'admin-registration1'];//name ng mga php file 
+        $allowed_pages = ['change_logo','accounts', 'dashboard', 'admin-registered-shops', 'products_report', 'settings', 'users_report', 'products', 'activity_log', 'users', 'category', 'websitetextadmin', 'legaladmin', 'archive', 'backup and restore', 'admin-registration1', 'org'];//name ng mga php file 
         if (in_array($page, $allowed_pages)) {
             include("$page.php");
         } else {
