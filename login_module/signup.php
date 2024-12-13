@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $last_name =  $_POST['last_name'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-
+    $organization = $_POST['organization'];
 
     // dapat  parehas yung password
     if ($password !== $confirm_password) {
@@ -40,9 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $user_name = strstr($email, '@', true);
 
                 // insert na lahat
-                $sql = "INSERT INTO users (email, first_name, middle_name, last_name, password, user_name) VALUES (?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO users (email, first_name, middle_name, last_name, password, user_name,  organization) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssss", $email,$first_name, $middle_name, $last_name, $hashed_password, $user_name);
+                $stmt->bind_param("sssssss", $email,$first_name, $middle_name, $last_name, $hashed_password, $user_name, $organization);
 
 
                 //activity log ni josh mojica(nakikita ka nya, dapat masipag ka)

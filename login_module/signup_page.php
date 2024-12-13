@@ -29,6 +29,20 @@ foreach ($content_keys as $content_key) {
 }
 
 
+$sql = "SELECT org_name FROM tb_org";
+$result = $conn->query($sql);
+
+
+$categories = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row['org_name'];
+    }
+} else {
+    echo "No organization found.";
+}
+
+
 ?>
 
 
@@ -91,6 +105,48 @@ foreach ($content_keys as $content_key) {
 .input-container input:focus {
     border-color: #712798;
 }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group select {
+    width: 100%;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    appearance: none;
+    cursor: pointer;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff; /* Adjust to your theme's primary color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.form-group select option {
+    padding: 5px;
+    background: #fff;
+    color: #333;
+}
+
+.form-group select option:hover {
+    background: #f7f7f7;
+}
+
       </style>
 </head>
 <body>
@@ -150,8 +206,24 @@ foreach ($content_keys as $content_key) {
                         </span>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="signup-org">Organization Name</label>
+                    <select id="signup-org" name="organization" class="form-control" required>
+                        <option value="">Select Organization</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo htmlspecialchars($category); ?>">
+                                <?php echo htmlspecialchars($category); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
-            
+          
+                 <!-- Payment -->
+                
+                
+                
 
 
             <!-- Right Side -->
@@ -185,6 +257,15 @@ foreach ($content_keys as $content_key) {
                         <input type="password" id="confirm-password" name="confirm_password" required>
                         <span class="password-toggle" id="toggle-confirm-password">
                             <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Payment Method</label>
+                    <div class="email-container">
+                        <input type="string" id="signup-email" name="email" required>
+                        <span class="email-icon">
+                            <i class="fas fa-envelope"></i>
                         </span>
                     </div>
                 </div>
